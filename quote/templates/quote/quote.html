@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Quote</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Container Styles */
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Header Styles */
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        /* Quote Styles */
+        p {
+            font-size: 1.5rem;
+            font-style: italic;
+            color: #34495e;
+            margin-bottom: 40px;
+        }
+
+        /* Image Styles */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        /* Footer Styles */
+        footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quote of the Day</h1>
+        <p>{{ quote }}</p>
+
+        <h2>Image:</h2>
+        <img src="{{ image }}" alt="Random image">
+
+        <footer>
+            <p>&copy; 2024 Quotes Inc. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
+

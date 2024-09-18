@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HW 3</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        /* Container for the content */
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        /* Heading styles */
+        h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        /* Link styles */
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            text-decoration: none;
+            color: #fff;
+            background-color: #3498db;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>HW 3</h1>
+
+        <!-- Link to go to the quote page -->
+        <a href="{% url 'quote' %}">Go to A Random Quote</a>
+    </div>
+</body>
+</html>
