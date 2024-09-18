@@ -5,4 +5,5 @@ from . import views
 urlpatterns = [
     path(r'', views.base, name ="base"),
     path('quote/', views.quote, name ="quote"),
+    path('show_all/', views.show_all, name ="show_all"),
 ]

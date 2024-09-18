@@ -35,3 +35,13 @@ def quote(request):
     }
 
     return render(request, template_name, context)
+
+def show_all(request):
+    template_name = 'quote/show_all.html'
+
+    context = {
+        "quotes" : quotes,
+        "images" : images
+
+    }
+    return render(request, template_name, context)
