@@ -45,3 +45,8 @@ def show_all(request):
 
     }
     return render(request, template_name, context)
+
+def about(request):
+    template_name = 'quote/about.html'
+
+    return render(request, template_name)

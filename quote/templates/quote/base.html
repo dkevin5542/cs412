@@ -1,4 +1,4 @@
-<html>
+<htm>
 <head>
     <title>HW 3</title>
     <style>
@@ -27,32 +27,37 @@
         h1 {
             font-size: 2.5rem;
             color: #2c3e50;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         a {
             display: inline-block;
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-size: 1.2rem;
             text-decoration: none;
             color: #fff;
             background-color: #3498db;
             border-radius: 8px;
-            transition: background-color 0.3s ease;
+            margin: 10px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         a:hover {
             background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        a:active {
+            transform: translateY(0);
         }
     </style>
 </head>
-
 <body>
     <div class="container">
-        <h1>HW 3</h1>
-
+        <h1>Quotes</h1>
         <a href="{% url 'quote' %}">Go to A Random Quote and Image</a>
-        <a href="{% url 'show_all' %}">Show all Quotes and Images</a>
+        <a href="{% url 'show_all' %}">Show All Quotes and Images</a>
+        <a href="{% url 'about' %}">About Page</a>
     </div>
 </body>
 </html>
