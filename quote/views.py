@@ -21,7 +21,16 @@ def base(request):
     
     template_name = 'quote/base.html'
 
-    return render(request, template_name)
+    
+    random_quote = random.choice(quotes)
+    random_image = random.choice(images)
+    context = {
+        "quote" : random_quote,
+        "image" : random_image
+
+    }
+
+    return render(request, template_name, context)
 
 def quote(request):
     template_name = 'quote/quote.html'

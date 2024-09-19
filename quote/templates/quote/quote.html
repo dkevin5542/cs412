@@ -1,4 +1,19 @@
-<html>
+{% extends 'quote/base.html' %}
+
+{% block title %}Random Quote{% endblock %}
+
+{% block content %}
+    <h1>Quote of the Day</h1>
+    <p>{{ quote }}</p>
+
+    <h2>Image:</h2>
+    <img src="{{ image }}" alt="Random image">
+{% endblock %}
+
+
+
+
+<!-- <html>
 <head>
     <title>Random Quote</title>
     <style>
@@ -60,5 +75,8 @@
 
     </div>
 </body>
-</html>
+</html> -->
+
+
+
 

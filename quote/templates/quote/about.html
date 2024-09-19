@@ -1,6 +1,8 @@
-<html>
-<head>
-    <title>About Sun Tzu & Note from Creator</title>
+{% extends 'quote/base.html' %}
+
+{% block title %}About Sun Tzu & Note from Creator{% endblock %}
+
+{% block content %}
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -73,19 +75,14 @@
             margin-top: 50px;
         }
     </style>
-</head>
-<body>
-
-    <h1>About Sun Tzu</h1>
 
     <div class="container">
-
         <div class="section">
             <img src="https://upload.wikimedia.org/wikipedia/commons/c/cf/%E5%90%B4%E5%8F%B8%E9%A9%AC%E5%AD%99%E6%AD%A6.jpg" alt="Sun Tzu">
             <div class="content">
                 <h2>About Sun Tzu</h2>
                 <p>
-                    Sun Tzu (c. 544 – c. 496 BC) was a Chinese general, military strategist, writer, and philosopher. He is traditionally credited as the author of "The Art of War", a treatise on military strategy that has influenced both Eastern and Western thought. His works focus on tactics, strategy, and leadership, emphasizing flexibility, knowledge of oneself and the enemy, and the importance of strategy over brute force. 
+                    Sun Tzu (c. 544 – c. 496 BC) was a Chinese general, military strategist, writer, and philosopher. He is traditionally credited as the author of "The Art of War", a treatise on military strategy that has influenced both Eastern and Western thought. His works focus on tactics, strategy, and leadership, emphasizing flexibility, knowledge of oneself and the enemy, and the importance of strategy over brute force.
                 </p>
                 <p>
                     Sun Tzu’s wisdom has transcended the battlefield, influencing leaders in politics, business, and beyond for over 2,500 years. His quote, "The greatest victory is that which requires no battle," speaks to his belief in the power of strategic thinking and conflict resolution.
@@ -96,16 +93,12 @@
         <div class="section">
             <img src="https://www.murdoch.edu.au/sf-images/newsportallibrary/feature-images/note-taking-feature.jpg?sfvrsn=ff31cf5f_0" alt="Note">
             <div class="content">
-                <h2>Note from the creator</h2>
+                <h2>Note from the Creator</h2>
                 <p>
-                    This is my first time using Django and Keroku as I am more used to React. The setting up part of Heroku was a big pain but after that
-                    making the web pages themselves weren't that big of a challenge.
+                    This is my first time using Django and Heroku as I am more used to React. The setup part of Heroku was a big challenge, but after that, creating the web pages wasn't too difficult.
                 </p>
-
             </div>
         </div>
-
     </div>
+{% endblock %}
 
-</body>
-</html>
