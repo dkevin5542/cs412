@@ -19,7 +19,7 @@ images = [
 
 def base(request):
     
-    template_name = 'quote/base.html'
+    template_name = 'quotes/base.html'
 
     
     random_quote = random.choice(quotes)
@@ -33,7 +33,7 @@ def base(request):
     return render(request, template_name, context)
 
 def quote(request):
-    template_name = 'quote/quote.html'
+    template_name = 'quotes/quote.html'
 
     random_quote = random.choice(quotes)
     random_image = random.choice(images)
@@ -46,7 +46,7 @@ def quote(request):
     return render(request, template_name, context)
 
 def show_all(request):
-    template_name = 'quote/show_all.html'
+    template_name = 'quotes/show_all.html'
 
     context = {
         "quotes" : quotes,
@@ -56,6 +56,6 @@ def show_all(request):
     return render(request, template_name, context)
 
 def about(request):
-    template_name = 'quote/about.html'
+    template_name = 'quotes/about.html'
 
     return render(request, template_name)
