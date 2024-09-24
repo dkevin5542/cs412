@@ -17,7 +17,6 @@ daily_Special = ['Tacos', 'Pasta', 'Sushi', 'Falafel']
 def main(request):
     """
     Render the main page of the restaurant.
-
     """
     template_name = 'restaurant/main.html'
     return render(request, template_name)
@@ -25,7 +24,6 @@ def main(request):
 def order(request):
     """
     Render the order page with menu items and a daily special.
-
     """
     template_name = 'restaurant/order.html'
     daily_special = random.choice(daily_Special)
@@ -44,7 +42,6 @@ def confirmation(request):
 
     If the request method is GET, redirect to the order page. Otherwise,
     process the POST data to compile the ordered items and customer information.
-
     """
     ordered_items = []
     total_price = 0
@@ -73,15 +70,17 @@ def confirmation(request):
         'email': request.POST.get('email')
     }
 
-    # Calculate ready time for the order
-    ready_time = datetime.now() + timedelta(minutes=random.randint(30, 60))
+    # Calculate ready time for the order randomly between 30 and 60 minutes
+    random_minutes = random.randint(30, 60)  # Get a random number of minutes between 30 and 60
+    ready_time = datetime.now() + timedelta(minutes=random_minutes)  # Add random minutes to current time
 
     # Prepare context for rendering the confirmation page
     context = {
         'ordered_items': ordered_items,
         'customer_info': customer_info,
         'total_price': total_price,
-        'ready_time': ready_time.strftime("%I:%M %p")
+        'ready_time': ready_time.strftime("%I:%M %p")  # Format the ready time
     }
     
     return render(request, template_name, context)
+
