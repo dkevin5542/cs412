@@ -1,0 +1,116 @@
+{% extends 'restaurant/base.html' %}
+
+{% block title %}Order Page{% endblock %}
+
+{% block content %}
+    <style>
+        main {
+            background-color: #ecf0f1;
+            padding: 40px;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #2c3e50;
+            text-align: center;
+        }
+        h2 {
+            font-size: 2.5rem;
+            color: #34495e;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        h3 {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        form div {
+            margin-bottom: 15px;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        input[type="checkbox"] {
+            margin-right: 10px; /* Space between checkbox and label */
+        }
+        input[type="text"], input[type="tel"], input[type="email"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #bdc3c7;
+            font-size: 1rem;
+        }
+        label {
+            font-size: 1rem;
+            color: #34495e;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+        button {
+            background-color: #1abc9c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #16a085;
+        }
+        button:active {
+            background-color: #149174;
+        }
+    </style>
+
+    <h2>Place Your Order</h2>
+    <form method="POST" action="{% url 'confirmation' %}">
+        {% csrf_token %}
+
+        <h3>Menu Items</h3>
+        {% for item, price in menu_items.items %}
+            <div class="checkbox-group">
+                <input type="checkbox" name="{{ item }}" id="{{ item }}">
+                <label for="{{ item }}">{{ item }} - ${{ price }}</label>
+            </div>
+        {% endfor %}
+
+        <h3>Daily Special: {{ daily_special }} - $7.00</h3>
+        <input type="hidden" name="daily_special_name" value="{{ daily_special }}">
+        <div class="checkbox-group">
+            <input type="checkbox" name="Daily Special" id="DailySpecial">
+            <label for="DailySpecial">Add Daily Special</label>
+        </div>
+
+        <h3>Customer Information</h3>
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" required>
+        </div>
+        
+        <div>
+            <label for="phone">Phone:</label>
+            <input type="tel" name="phone" id="phone" required>
+        </div>
+
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+        </div>
+
+        <div>
+            <label for="special_instructions">Special Instructions:</label>
+            <textarea name="special_instructions" id="special_instructions"></textarea>
+        </div>
+
+        <button type="submit">Submit Order</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'restaurant/base.html' %}
+
+{% block title %}Main Page{% endblock %}
+
+{% block content %}
+    <style>
+        main {
+            background-color: #ecf0f1;
+            padding: 40px;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #2c3e50;
+            text-align: center;
+        }
+        h2 {
+            font-size: 2.5rem;
+            color: #34495e;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            font-size: 1.2rem;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #34495e;
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .restaurant-images {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .restaurant-images img {
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .restaurant-images img:hover {
+            transform: scale(1.05);
+        }
+    </style>
+
+    <h2>About Our Restaurant</h2>
+    <p>We are located at 610 Beacon St</p>
+    <p>Hours of Operation:</p>
+    <ul>
+        <li>Monday - Friday: 10 AM - 10 PM</li>
+        <li>Saturday - Sunday: 12 PM - 12 AM</li>
+    </ul>
+
+    <div class="restaurant-images">
+        <img src="https://cdn.shopify.com/s/files/1/0274/9503/9079/files/20220211142754-margherita-9920_5a73220e-4a1a-4d33-b38f-26e98e3cd986.jpg?v=1723650067" alt="Pizza">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmorKZebnhCwAu_nX2h2Q2yJfLhtsPhLTv2Q&s" alt="Burger">
+        <img src="https://www.eggs.ca/assets/RecipeThumbs/EFC-Egg-Salad-Sandwich-HERO-1280x720.jpg" alt="Sandwich">
+    </div>
+{% endblock %}
+

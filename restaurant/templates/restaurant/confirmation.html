@@ -1,0 +1,61 @@
+{% extends 'restaurant/base.html' %}
+
+{% block title %}Order Confirmation{% endblock %}
+
+{% block content %}
+    <style>
+        main {
+            background-color: #ecf0f1;
+            padding: 40px;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #2c3e50;
+            text-align: center;
+        }
+        h2 {
+            font-size: 2.5rem;
+            color: #34495e;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        h3 {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+        ul li {
+            font-size: 1.2rem;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #34495e;
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
+    <h2>Order Confirmation</h2>
+    <p>Thank you for your order, {{ customer_info.name }}!</p>
+    <p>Your order will be ready at {{ ready_time }}.</p>
+
+    <h3>Ordered Items:</h3>
+    <ul>
+        {% for item in ordered_items %}
+            <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+
+    <p>Total Price: ${{ total_price }}</p>
+
+    <p>We will contact you at {{ customer_info.phone }} or {{ customer_info.email }} if needed.</p>
+{% endblock %}
