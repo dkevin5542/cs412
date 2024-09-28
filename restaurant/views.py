@@ -104,7 +104,7 @@ def confirmation(request):
         'customer_info': customer_info,
         'total_price': total_price,
         'ready_time': eastern_time.strftime("%I:%M %p"),
-        'selected_toppings': selected_toppings  # Pass the toppings to the confirmation page
+        'selected_toppings': selected_toppings  
     }
     
     return render(request, template_name, context)
