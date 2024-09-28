@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 import random
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo  
 
 # Define the menu items and their prices
 menuItem = {
@@ -71,15 +72,18 @@ def confirmation(request):
     }
 
     # Calculate ready time for the order randomly between 30 and 60 minutes
-    random_minutes = random.randint(30, 60)  # Get a random number of minutes between 30 and 60
-    ready_time = datetime.now() + timedelta(minutes=random_minutes)  # Add random minutes to current time
+    random_minutes = random.randint(30, 60) 
+    ready_time = datetime.now() + timedelta(minutes=random_minutes)  
+
+    # Localize the ready_time to Eastern Time (EST/EDT using zoneinfo)
+    eastern_time = ready_time.astimezone(ZoneInfo("America/New_York"))
 
     # Prepare context for rendering the confirmation page
     context = {
         'ordered_items': ordered_items,
         'customer_info': customer_info,
         'total_price': total_price,
-        'ready_time': ready_time.strftime("%I:%M %p")  # Format the ready time
+        'ready_time': eastern_time.strftime("%I:%M %p")  
     }
     
     return render(request, template_name, context)
