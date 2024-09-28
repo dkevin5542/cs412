@@ -69,8 +69,11 @@
         button:active {
             background-color: #149174;
         }
+        toppings-section {
+            margin-left: 20px; 
+            font-size: 0.9rem; 
+        }
     </style>
-
     <h2>Place Your Order</h2>
     <form method="POST" action="{% url 'confirmation' %}">
         {% csrf_token %}
@@ -78,10 +81,21 @@
         <h3>Menu Items</h3>
         {% for item, price in menu_items.items %}
             <div class="checkbox-group">
-                <input type="checkbox" name="{{ item }}" id="{{ item }}">
+                <input type="checkbox" name="{{ item }}" id="{{ item }}" 
+                       {% if item == 'Pizza' %}onclick="toggleToppings()" {% endif %}>
                 <label for="{{ item }}">{{ item }} - ${{ price }}</label>
             </div>
         {% endfor %}
+
+        <div id="toppings-section" style="display: none; margin-left: 20px;">
+            <h4>Pizza Toppings</h4>
+            {% for topping, price in pizza_toppings.items %}
+                <div class="checkbox-group">
+                    <input type="checkbox" name="{{ topping }}" id="{{ topping }}">
+                    <label for="{{ topping }}">{{ topping }} - ${{ price }}</label>
+                </div>
+            {% endfor %}
+        </div>
 
         <h3>Daily Special: {{ daily_special }} - $7.00</h3>
         <input type="hidden" name="daily_special_name" value="{{ daily_special }}">
@@ -113,4 +127,18 @@
 
         <button type="submit">Submit Order</button>
     </form>
+
+    <!-- JavaScript to show/hide pizza toppings -->
+    <script>
+        function toggleToppings() {
+            var pizzaCheckbox = document.getElementById("Pizza");
+            var toppingsSection = document.getElementById("toppings-section");
+
+            if (pizzaCheckbox.checked) {
+                toppingsSection.style.display = "block";
+            } else {
+                toppingsSection.style.display = "none";
+            }
+        }
+    </script>
 {% endblock %}
