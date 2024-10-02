@@ -1,0 +1,56 @@
+{% extends 'mini_fb/base.html' %}
+
+{% block content %}
+<h1 align="center">Show all Profiles</h1>
+
+<style>
+    /* Style for the grid container */
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+        gap: 20px;
+        padding: 20px;
+    }
+
+    /* Individual profile widget */
+    .profile-widget {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    /* Profile image styling to ensure uniform size */
+    .profile-widget img {
+        width: 150px; /* Fixed width */
+        height: 150px; /* Fixed height */
+        object-fit: cover; /* Ensures the image fits within the box without distortion */
+        border-radius: 50%; /* Circular image */
+        margin-bottom: 15px;
+    }
+
+    /* Profile name styling */
+    .profile-widget h2 {
+        font-size: 1.5rem;
+        color: #333;
+    }
+
+    /* Profile city styling */
+    .profile-widget h3 {
+        font-size: 1.2rem;
+        color: #777;
+    }
+</style>
+
+<main class="grid-container">
+    {% for i in profiles %}
+    <div class="profile-widget">
+        <img src="{{ i.image_url }}" alt="Profile image of {{ i.first_name }}">
+        <h2>{{ i.first_name }} {{ i.last_name }}</h2>
+        <h3>{{ i.city }}</h3>
+    </div>
+    {% endfor %}
+</main>
+{% endblock %}
