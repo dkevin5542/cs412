@@ -1,6 +1,9 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>{% block title %}Show All Profile{% endblock %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Mini Facebook Clone{% endblock %}</title>
     <style>
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -8,60 +11,78 @@
             padding: 0;
             background-color: #f4f4f4;
         }
+
         header {
-            background-color: #2c3e50;
+            background-color: #4267B2;
             color: white;
-            padding: 20px 0;
+            padding: 10px 0;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
         nav {
             display: flex;
             justify-content: center;
             gap: 30px;
-            margin-top: 10px;
+            padding: 10px 0;
+            background-color: #4267B2;
         }
+
         nav a {
             color: white;
             text-decoration: none;
             font-size: 16px;
             letter-spacing: 0.5px;
             padding: 10px 15px;
-            position: relative;
             transition: color 0.3s ease, transform 0.3s ease;
         }
-        nav a::before {
-            content: "";
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: #1abc9c;
-            transition: width 0.3s ease;
-        }
-        nav a:hover::before {
-            width: 100%;
-        }
+
         nav a:hover {
             color: #1abc9c;
             transform: translateY(-2px);
         }
-        nav a:active {
-            color: #16a085;
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #4267B2;
+            color: white;
         }
     </style>
 </head>
 <body>
     <header>
-        <!-- <h1>Welcome to the CS412 Restaurant</h1> -->
+        <h1>Mini Facebook Clone</h1>
         <nav>
-            <!-- <a href="{% url 'main' %}">Main</a>
-            <a href="{% url 'order' %}">Order</a> -->
+            <a href="{% url 'base' %}">Home</a>
+            <a href="{% url 'show_all_profile' %}">Show All Profiles</a> 
         </nav>
     </header>
+
     <main>
-        {% block content %}{% endblock %}
+        {% block content %}
+        <h2>About This Site</h2>
+        <p>This mini Facebook clone allows users to view profiles of other users, including their name, location, and profile picture.</p>
+        <p>Click "Show All Profiles" in the navigation bar to see a list of all registered profiles on the platform.</p>
+        {% endblock %}
     </main>
+
+    <footer>
+        <p>&copy; 2024 Mini Facebook Clone. All rights reserved.</p>
+    </footer>
 </body>
 </html>

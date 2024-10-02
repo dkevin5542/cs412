@@ -4,7 +4,6 @@
 <h1 align="center">Show all Profiles</h1>
 
 <style>
-    /* Style for the grid container */
     .grid-container {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
@@ -12,7 +11,6 @@
         padding: 20px;
     }
 
-    /* Individual profile widget */
     .profile-widget {
         border: 1px solid #ccc;
         border-radius: 10px;
@@ -22,25 +20,27 @@
         text-align: center;
     }
 
-    /* Profile image styling to ensure uniform size */
     .profile-widget img {
-        width: 150px; /* Fixed width */
-        height: 150px; /* Fixed height */
-        object-fit: cover; /* Ensures the image fits within the box without distortion */
-        border-radius: 50%; /* Circular image */
+        width: 150px;
+        height: 150px; 
+        object-fit: cover; 
+        border-radius: 50%; 
         margin-bottom: 15px;
     }
 
-    /* Profile name styling */
     .profile-widget h2 {
         font-size: 1.5rem;
         color: #333;
     }
 
-    /* Profile city styling */
     .profile-widget h3 {
         font-size: 1.2rem;
         color: #777;
+    }
+
+    .profile-widget h4 {
+        font-size: 1rem;
+        color: #555;
     }
 </style>
 
@@ -50,7 +50,9 @@
         <img src="{{ i.image_url }}" alt="Profile image of {{ i.first_name }}">
         <h2>{{ i.first_name }} {{ i.last_name }}</h2>
         <h3>{{ i.city }}</h3>
+        <h4>{{ i.email }}</h4> 
     </div>
     {% endfor %}
 </main>
 {% endblock %}
+
