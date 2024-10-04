@@ -11,9 +11,9 @@ class ShowAllView(ListView):
     context_object_name = 'profiles' 
 
 
-# def base(request):
-#     """
-#     Render the main page of the mini_fb app.
-#     """
-#     template_name = 'mini_fb/base.html'
-#     return render(request, template_name)
+def base(request):
+    """
+    Render the main page of the mini_fb app.
+    """
+    template_name = 'mini_fb/base.html'
+    return render(request, template_name)
