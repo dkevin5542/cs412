@@ -1,12 +1,12 @@
 {% extends 'mini_fb/base.html' %}
 
 {% block content %}
-<h1 align="center">Show all Profiles</h1>
+<h1 align="center">{{ profile.first_name }} {{ profile.last_name }}'s Profile</h1>
 
 <style>
     .grid-container {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
         gap: 20px;
         padding: 20px;
     }
@@ -26,17 +26,6 @@
         object-fit: cover; 
         border-radius: 50%; 
         margin-bottom: 15px;
-        transition: opacity 0.3s ease; /* Smooth transition */
-    }
-
-    /* Dim the image on hover */
-    .profile-widget img:hover {
-        opacity: 0.7; /* Dim by reducing opacity */
-    }
-
-    /* Remove underline from the name link */
-    .profile-widget a {
-        text-decoration: none;
     }
 
     .profile-widget h2 {
@@ -53,21 +42,14 @@
         font-size: 1rem;
         color: #555;
     }
-
-    .profile-widget a:hover h2 {
-        color: #007bff; 
-    }
 </style>
 
 <main class="grid-container">
-    {% for i in profiles %}
     <div class="profile-widget">
-        <a href="{% url 'profile' i.pk %}"><img src="{{ i.image_url }}" alt="Profile image of {{ i.first_name }}"></a>
-        <a href="{% url 'profile' i.pk %}"><h2>{{ i.first_name }} {{ i.last_name }}</h2></a>
-        <h3>{{ i.city }}</h3>
-        <h4>{{ i.email }}</h4> 
+        <img src="{{ profile.image_url }}" alt="Profile image of {{ profile.first_name }}">
+        <h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
+        <h3>{{ profile.city }}</h3>
+        <h4>{{ profile.email }}</h4> 
     </div>
-    {% endfor %}
 </main>
 {% endblock %}
-

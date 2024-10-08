@@ -10,7 +10,11 @@ class Profile(models.Model):
     image_url = models.URLField(blank=True) 
     
     def __str__(self):
-        '''Return a string representation of this profile object.'''
-
-         
+        '''Return a string representation of this profile object.''' 
         return f"{self.first_name} {self.last_name}'s Profile"
+
+
+
+
+
+
