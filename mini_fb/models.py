@@ -17,4 +17,14 @@ class Profile(models.Model):
 
 
 
+class StatusMessage(models.Model):
+    '''creates the model for each status message for each profile for the mini_fb'''
+    profile  = models.ForeignKey("Profile", on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now=True)
+    message = models.TextField(blank=False)
+
+
+    def __str__(self):
+        '''Return the string representation of this comment.'''
+        return f'{self.message}'
 
