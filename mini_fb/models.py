@@ -12,6 +12,11 @@ class Profile(models.Model):
     def __str__(self):
         '''Return a string representation of this profile object.''' 
         return f"{self.first_name} {self.last_name}'s Profile"
+    
+    def get_statusMessage(self):
+        '''Return all of the statusMessage about this profile.'''
+        messages = StatusMessage.objects.filter(profile=self)
+        return messages
 
 
 

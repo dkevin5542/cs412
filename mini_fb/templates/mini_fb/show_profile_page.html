@@ -42,6 +42,32 @@
         font-size: 1rem;
         color: #555;
     }
+
+    .status-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .status-message {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 15px;
+        background-color: #fff;
+        box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .status-message strong {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .status-message p {
+        font-size: 1rem;
+        color: #333;
+    }
 </style>
 
 <main class="grid-container">
@@ -50,6 +76,18 @@
         <h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
         <h3>{{ profile.city }}</h3>
         <h4>{{ profile.email }}</h4> 
+    </div>
+
+    <div>
+        <h2>Status Message</h2>
+        <div class="status-container">
+            {% for i in profile.get_statusMessage %}
+            <div class="status-message">
+                <strong>by {{ profile.first_name }} {{ profile.last_name }} at {{ i.timestamp }}</strong>
+                <p>{{ i.message }}</p>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </main>
 {% endblock %}
