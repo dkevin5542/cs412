@@ -1,4 +1,6 @@
 from django.db import models
+from django.urls import reverse
+
 
 # Create your models here.
 class Profile(models.Model):
@@ -17,6 +19,10 @@ class Profile(models.Model):
         '''Return all of the statusMessage about this profile.'''
         messages = StatusMessage.objects.filter(profile=self)
         return messages
+    
+    def get_absolute_url(self):
+        '''Returns the URL to display this profile.'''
+        return reverse('profile', args=[self.pk])
 
 
 
