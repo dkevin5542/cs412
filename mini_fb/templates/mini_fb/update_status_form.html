@@ -24,34 +24,13 @@
         font-weight: bold;
     }
 
-    .profile-form {
+    .status-form {
         display: flex;
         flex-direction: column;
         gap: 20px;
     }
 
-    .profile-form table {
-        width: 100%;
-        border-spacing: 0;
-        border-collapse: collapse;
-    }
-
-    .profile-form th {
-        text-align: left;
-        font-size: 16px;
-        color: #555;
-        padding-bottom: 10px;
-    }
-
-    .profile-form td {
-        padding: 10px 0;
-    }
-
-    .profile-form input[type="text"], 
-    .profile-form input[type="email"], 
-    .profile-form input[type="url"], 
-    .profile-form textarea, 
-    .profile-form input[type="file"] {
+    .status-form textarea {
         width: 100%;
         padding: 12px;
         border: 1px solid #dcdfe6;
@@ -60,41 +39,48 @@
         font-size: 16px;
         transition: border-color 0.3s ease;
         box-sizing: border-box;
+        resize: none; /* Disable resizing */
+        height: 80px; /* Set a fixed height */
     }
 
-    .profile-form textarea {
-        height: 80px; 
-        resize: none;  
-    }
-
-    .profile-form input[type="text"]:focus, 
-    .profile-form input[type="email"]:focus, 
-    .profile-form input[type="file"]:focus, 
-    .profile-form textarea:focus {
+    .status-form textarea:focus {
         border-color: #1877f2;
         outline: none;
     }
 
     .form-actions {
         display: flex;
-        justify-content: center;
+        justify-content: space-between; 
         margin-top: 25px;
     }
 
-    .submit-btn {
+    .submit-btn, .cancel-btn {
         padding: 12px 20px;
         border: none;
         border-radius: 8px;
         font-size: 16px;
         cursor: pointer;
         transition: background-color 0.3s ease;
+        text-align: center;
+    }
+
+    .submit-btn {
         background-color: #1877f2;
         color: white;
-        text-align: center;
     }
 
     .submit-btn:hover {
         background-color: #155bb5;
+    }
+
+    .cancel-btn {
+        background-color: #ccc;
+        color: #333;
+        text-decoration: none;
+    }
+
+    .cancel-btn:hover {
+        background-color: #bbb;
     }
 
     @media (max-width: 768px) {
@@ -105,23 +91,15 @@
 </style>
 
 <div class="form-container">
-    <h2 class="form-title">Update {{ profile.first_name }} {{ profile.last_name }}'s Profile</h2>
-    <form method="POST" enctype="multipart/form-data" class="profile-form">
+    <h2 class="form-title">Update Status Message</h2>
+    <form method="POST" class="status-form">
         {% csrf_token %}
-        <table>
-            {% for field in form %}
-            <tr>
-                <th>{{ field.label_tag }}</th>
-                <td>{{ field }}</td>
-            </tr>
-            {% endfor %}
-            <tr>
-                <td colspan="2" class="form-actions">
-                    <input type="submit" name="update_profile" value="Update Profile!" class="submit-btn">
-                </td>
-            </tr>
-        </table>
+        <textarea name="message" placeholder="Update your status message...">{{ updateStatus.message }}</textarea>
+        
+        <div class="form-actions">
+            <input type="submit" name="update_status" value="Update Status!" class="submit-btn">
+            <a href="{% url 'profile' updateStatus.profile.pk %}" class="cancel-btn">Cancel</a>
+        </div>
     </form>
 </div>
 {% endblock %}
-

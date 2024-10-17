@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, UpdateView 
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse
 from django.core.files.images import ImageFile 
 
@@ -96,5 +96,46 @@ class UpdateProfileView(UpdateView):
         Handle the form submission to create a new Profile object.
         '''
         return super().form_valid(form)
+    
+
+class UpdateStatusMessageView(UpdateView):
+    '''A view to update a profile and save it to the database.'''
+    form_class = UpdateStatusForm
+    template_name = "mini_fb/update_status_form.html"
+    model = StatusMessage 
+    context_object_name = "updateStatus"
+
+    def form_valid(self, form):
+        '''
+        Handle the form submission to create a new Profile object.
+        '''
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        '''Return the URL to which we should be directed after the delete.'''
+        # Get the profile associated with the status message
+        profile = self.object.profile
+
+        # Redirect to the profile page after deletion
+        return reverse('profile', kwargs={'pk': profile.pk})
+
+
+
+class DeleteStatusMessageView(DeleteView):
+    '''A view that deletes a status message and remove it from the database'''
+    template_name = "mini_fb/delete_status_form.html"
+    model = StatusMessage
+    context_object_name = 'status'
+
+    def get_success_url(self):
+        '''Return the URL to which we should be directed after the delete.'''
+        # Get the profile associated with the status message
+        profile = self.object.profile
+
+        # Redirect to the profile page after deletion
+        return reverse('profile', kwargs={'pk': profile.pk})
+
+
+
 
 
