@@ -90,7 +90,7 @@
 
 <main class="grid-container">
     <div class="profile-widget">
-        <img src="{{ profile.image_file }}" alt="Profile image of {{ profile.first_name }}">
+        <img src="{{ profile.image_file.url }}" alt="Profile image of {{ profile.first_name }}">
         <h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
         <h3>{{ profile.city }}</h3>
         <h4>{{ profile.email }}</h4> 
