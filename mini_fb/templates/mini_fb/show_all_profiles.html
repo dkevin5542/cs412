@@ -60,7 +60,10 @@
 <main class="grid-container">
     {% for i in profiles %}
     <div class="profile-widget">
-        <a href="{% url 'profile' i.pk %}"><img src="{{ i.image_file.url }}" alt="Profile image of {{ i.first_name }}"></a>
+        {% if i.image_file %}
+        <a href="{% url 'profile' i.pk %}"><img src="{{ i.image_file.url }}" alt="Profile image of {{ i.first_name }}"></a>        {% else %}
+        No image_file available.
+        {% endif %}
         <a href="{% url 'profile' i.pk %}"><h2>{{ i.first_name }} {{ i.last_name }}</h2></a>
         <h3>{{ i.city }}</h3>
         <h4>{{ i.email }}</h4> 
