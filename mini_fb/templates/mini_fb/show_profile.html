@@ -43,6 +43,24 @@
         color: #555;
     }
 
+    .update-profile-btn {
+        display: inline-block;
+        padding: 10px 15px;
+        background-color: #1877f2;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        text-align: center;
+        text-decoration: none; 
+        margin-top: 20px;
+        transition: background-color 0.3s ease;
+    }
+
+    .update-profile-btn:hover {
+        background-color: #155bb5;
+    }
+
     .status-container {
         display: flex;
         flex-direction: column;
@@ -97,14 +115,14 @@
     }
 </style>
 
-
-
 <main class="grid-container">
     <div class="profile-widget">
         <img src="{{ profile.image_file.url }}" alt="Profile image of {{ profile.first_name }}">
         <h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
         <h3>{{ profile.city }}</h3>
-        <h4>{{ profile.email }}</h4> 
+        <h4>{{ profile.email }}</h4>
+        <!-- Add Update Profile Button here -->
+        <a href="{% url 'update_profile' profile.pk %}" class="update-profile-btn">Update Profile</a>
     </div>
 
     <div>

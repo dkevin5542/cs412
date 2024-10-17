@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView 
 from django.urls import reverse
 from django.core.files.images import ImageFile 
 
@@ -83,4 +83,18 @@ class CreateStatusMessageView(CreateView):
                 img.save()
 
             return super().form_valid(form)
+    
+
+class UpdateProfileView(UpdateView):
+    '''A view to update a profile and save it to the database.'''
+    form_class = UpdateProfileForm
+    template_name = "mini_fb/update_profile_form.html"
+    model = Profile 
+
+    def form_valid(self, form):
+        '''
+        Handle the form submission to create a new Profile object.
+        '''
+        return super().form_valid(form)
+
 

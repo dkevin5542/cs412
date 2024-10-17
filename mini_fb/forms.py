@@ -15,3 +15,13 @@ class CreateStatusMessageForm(forms.ModelForm):
         '''Associate this HTML form with the StatusMessage data model'''
         model = StatusMessage
         fields = ['message', ] 
+
+class UpdateProfileForm(forms.ModelForm):
+    '''A form used to update a profile'''
+    class Meta:
+        '''associate this form with the Profile model.'''
+        model = Profile
+        fields = ['city', 'email', 'image_file']
+
+
+
