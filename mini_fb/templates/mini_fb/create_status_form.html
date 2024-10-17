@@ -113,9 +113,12 @@
 
 <div class="form-container">
     <h2 class="form-title">Create Status Message</h2>
-    <form method="POST" class="status-form">
+    <form method="POST" class="status-form" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
+
+        <input type="file" name="files" multiple />
+
         
         <div class="form-actions">
             <input type="submit" name="submit" value="Create Comment" class="submit-btn">

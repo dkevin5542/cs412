@@ -14,4 +14,4 @@ class CreateStatusMessageForm(forms.ModelForm):
     class Meta:
         '''Associate this HTML form with the StatusMessage data model'''
         model = StatusMessage
-        fields = ['message'] 
+        fields = ['message', ] 

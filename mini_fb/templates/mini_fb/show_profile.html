@@ -70,10 +70,12 @@
     }
 
     .status-message img {
-        max-width: 100%; /* Ensure images are responsive */
-        height: auto; /* Maintain aspect ratio */
-        border-radius: 5px; /* Optional styling */
-        margin-top: 10px; /* Space between message and images */
+        width: 200px;
+        height: 200px;
+        object-fit: cover; 
+        border-radius: 5px; 
+        margin: 10px auto 0 auto; 
+        display: block; 
     }
 
     .create-status-btn {
@@ -94,6 +96,8 @@
         background-color: #155bb5;
     }
 </style>
+
+
 
 <main class="grid-container">
     <div class="profile-widget">

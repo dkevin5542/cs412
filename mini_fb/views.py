@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView
 from django.urls import reverse
+from django.core.files.images import ImageFile 
+
 
 from .models import * 
 from .forms import *
@@ -65,12 +67,20 @@ class CreateStatusMessageView(CreateView):
         return reverse('profile', kwargs={'pk':profile.pk})
 
     def form_valid(self, form):
-        '''This method is called after the form is validated, 
-        before saving data to the database.'''
+            '''This method is called after the form is validated and before saving data to the database.'''
+            profile = Profile.objects.get(pk=self.kwargs['pk'])
+            form.instance.profile = profile 
 
-        profile = Profile.objects.get(pk=self.kwargs['pk'])
+            # Save the form to create the status message
+            sm = form.save()
 
-        form.instance.profile = profile 
+            # Handle the file uploads
+            files = self.request.FILES.getlist('files')
 
-        return super().form_valid(form)
+            for file in files:
+                # Create an Image object for each file and associate it with the status message
+                img = Image(status_message=sm, image_file=file)  # Assuming Image has fields: status_message (FK), image_file (ImageField)
+                img.save()
+
+            return super().form_valid(form)
 

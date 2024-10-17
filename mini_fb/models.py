@@ -37,6 +37,7 @@ class StatusMessage(models.Model):
     message = models.TextField(blank=False)
 
 
+
     def __str__(self):
         '''Return the string representation of this comment.'''
         return f'{self.message}'
