@@ -55,14 +55,37 @@
     .profile-widget a:hover h2 {
         color: #007bff; 
     }
+
+    .placeholder-container {
+        display: flex;
+        justify-content: center; 
+        align-items: center; 
+        width: 100%; 
+        height: 150px; 
+        margin-bottom: 15px; 
+    }
+
+    .placeholder-image {
+        width: 150px;
+        height: 150px;
+        object-fit: cover; 
+        border-radius: 50%; 
+        background-color: #ccc;
+    }
 </style>
 
 <main class="grid-container">
     {% for i in profiles %}
     <div class="profile-widget">
         {% if i.image_file %}
-        <a href="{% url 'profile' i.pk %}"><img src="{{ i.image_file.url }}" alt="Profile image of {{ i.first_name }}"></a>        {% else %}
-        No image_file available.
+            <a href="{% url 'profile' i.pk %}">
+                <img src="{{ i.image_file.url }}" alt="Profile image of {{ i.first_name }}">
+            </a>
+        {% else %}
+            <div class="placeholder-container">
+                <div class="placeholder-image"></div> 
+            </div>
+            <p>No profile image available.</p> 
         {% endif %}
         <a href="{% url 'profile' i.pk %}"><h2>{{ i.first_name }} {{ i.last_name }}</h2></a>
         <h3>{{ i.city }}</h3>
@@ -71,4 +94,6 @@
     {% endfor %}
 </main>
 {% endblock %}
+
+
 

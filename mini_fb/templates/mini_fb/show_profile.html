@@ -154,11 +154,26 @@
     .delete-status-btn:hover {
         background-color: #cc0000;
     }
+
+    .placeholder-container {
+        display: flex;
+        justify-content: center;
+        align-items: center; 
+        width: 150px;
+        height: 150px; 
+        margin: 0 auto 15px auto; 
+        background-color: #ccc; 
+        border-radius: 50%; 
+    }
 </style>
 
 <main class="grid-container">
     <div class="profile-widget">
-        <img src="{{ profile.image_file.url }}" alt="Profile image of {{ profile.first_name }}">
+        {% if profile.image_file %}
+            <img src="{{ profile.image_file.url }}" alt="Profile image of {{ profile.first_name }}">
+        {% else %}
+            <div class="placeholder-container"></div> 
+        {% endif %}
         <h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
         <h3>{{ profile.city }}</h3>
         <h4>{{ profile.email }}</h4>
