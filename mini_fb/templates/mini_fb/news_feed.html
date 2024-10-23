@@ -1,0 +1,100 @@
+{% extends 'mini_fb/base.html' %}
+
+{% block content %}
+<h1 align="center">{{ profile.first_name }} {{ profile.last_name }}'s News Feed</h1>
+
+<style>
+    .news-feed-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .status-card {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .status-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .status-header img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px;
+    }
+
+    .status-header h3 {
+        font-size: 1.2rem;
+        color: #333;
+    }
+
+    .status-body p {
+        font-size: 1rem;
+        color: #333;
+    }
+
+    .status-body img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+
+    .back-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #1877f2;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        margin-top: 20px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .back-btn:hover {
+        background-color: #155bb5;
+        transform: scale(1.05);
+    }
+</style>
+
+<div class="news-feed-container">
+    {% for status in news_feed %}
+    <div class="status-card">
+        <div class="status-header">
+            <a href="{% url 'profile' status.profile.pk %}">
+                {% if status.profile.image_file %}
+                <img src="{{ status.profile.image_file.url }}" alt="Profile image of {{ status.profile.first_name }}">
+                {% else %}
+                <div class="placeholder-container"></div>
+                {% endif %}
+            </a>
+            <h3>{{ status.profile.first_name }} {{ status.profile.last_name }}</h3>
+        </div>
+        <div class="status-body">
+            <p>{{ status.message }}</p>
+            {% if status.get_images %}
+            <div>
+                {% for img in status.get_images %}
+                <img src="{{ img.image_file.url }}" alt="Image for {{ status.message }}">
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<a href="{% url 'profile' profile.pk %}" class="back-btn">Back to Profile</a>
+
+{% endblock %}

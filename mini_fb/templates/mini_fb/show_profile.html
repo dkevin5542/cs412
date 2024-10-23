@@ -58,11 +58,39 @@
         font-size: 16px;
         text-align: center;
         text-decoration: none; 
-        margin-top: 20px;
+        margin-top: 10px;
         transition: background-color 0.3s ease;
     }
 
     .update-profile-btn:hover {
+        background-color: #155bb5;
+    }
+
+    .create-status-btn,
+    .friend-suggestions-btn,
+    .news-feed-btn {
+        display: inline-block;
+        padding: 10px 15px;
+        background-color: #1877f2;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        text-align: center;
+        text-decoration: none; 
+        margin-top: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    .create-status-btn:hover {
+        background-color: #155bb5;
+    }
+
+    .friend-suggestions-btn:hover {
+        background-color: #155bb5;
+    }
+
+    .news-feed-btn:hover {
         background-color: #155bb5;
     }
 
@@ -99,24 +127,6 @@
         border-radius: 5px; 
         margin: 10px auto 0 auto; 
         display: block; 
-    }
-
-    .create-status-btn {
-        display: inline-block;
-        padding: 10px 15px;
-        background-color: #1877f2;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        text-align: center;
-        text-decoration: none; 
-        margin-top: 20px; 
-        transition: background-color 0.3s ease;
-    }
-
-    .create-status-btn:hover {
-        background-color: #155bb5;
     }
 
     .form-actions {
@@ -165,6 +175,70 @@
         background-color: #ccc; 
         border-radius: 50%; 
     }
+
+    .friends-container {
+        margin-top: 20px;
+    }
+
+    .friends-container h2 {
+        font-size: 1.8rem;
+        color: #333;
+    }
+
+    .friend-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .friend-item a {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: black;
+        transition: color 0.3s ease;
+    }
+
+    .friend-item a:hover {
+        color: #155bb5;
+    }
+
+    .friend-item img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 20px;
+        border: 2px solid #ccc;
+        transition: transform 0.3s ease;
+    }
+
+    .friend-item a:hover img {
+        transform: scale(1.05);
+    }
+
+    .friend-item a .friend-name {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .friend-placeholder {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background-color: #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: white;
+        margin-right: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    .friend-item a:hover .friend-placeholder {
+        transform: scale(1.05);
+    }
 </style>
 
 <main class="grid-container">
@@ -179,6 +253,8 @@
         <h4>{{ profile.email }}</h4>
         <a href="{% url 'update_profile' profile.pk %}" class="update-profile-btn">Update Profile</a>
         <a href="{% url 'create_status' profile.pk %}" class="create-status-btn">Create Status Message</a>
+        <a href="{% url 'friend_suggestions' profile.pk %}" class="friend-suggestions-btn">Friend Suggestions</a>
+        <a href="{% url 'news_feed' profile.pk %}" class="news-feed-btn">View News Feed</a>
     </div>
 
     <div>
@@ -201,7 +277,32 @@
             {% endfor %}
         </div>
     </div>
+
+    <div class="friends-container">
+        <h2>Friends</h2>
+        {% if profile.get_friends %}
+            <ul>
+                {% for friend in profile.get_friends %}
+                <li class="friend-item">
+                    <a href="{% url 'profile' friend.pk %}">
+                        {% if friend.image_file %}
+                            <img src="{{ friend.image_file.url }}" alt="Profile image of {{ friend.first_name }}">
+                        {% else %}
+                            <div class="friend-placeholder">
+                                {{ friend.first_name|slice:":1" }}{{ friend.last_name|slice:":1" }}
+                            </div>
+                        {% endif %}
+                        <span class="friend-name">{{ friend.first_name }} {{ friend.last_name }}</span>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>{{ profile.first_name }} has no friends yet.</p>
+        {% endif %}
+    </div>
 </main>
 {% endblock %}
+
 
 

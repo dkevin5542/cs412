@@ -69,8 +69,11 @@
         <h1>Mini Facebook Clone</h1>
         <nav>
             <a href="{% url 'base' %}">Home</a>
-            <a href="{% url 'show_all_profile' %}">Show All Profiles</a> 
-            <a href="{% url 'create_profile' %}">Create New Profile</a> 
+            <a href="{% url 'show_all_profile' %}">Show All Profiles</a>
+            <a href="{% url 'create_profile' %}">Create New Profile</a>
+            {% if profile %}
+            <a href="{% url 'news_feed' profile.pk %}">News Feed</a>
+            {% endif %}
         </nav>
     </header>
 
@@ -87,3 +90,4 @@
     </footer>
 </body>
 </html>
+
