@@ -219,11 +219,12 @@
         <h4>{{ profile.email }}</h4>
 
         {% if user.is_authenticated and user == profile.user %}
+
             <!-- Only the profile owner can see these links -->
-            <a href="{% url 'update_profile' profile.pk %}" class="update-profile-btn">Update Profile</a>
-            <a href="{% url 'create_status' profile.pk %}" class="create-status-btn">Create Status Message</a>
-            <a href="{% url 'friend_suggestions' profile.pk %}" class="friend-suggestions-btn">Friend Suggestions</a>
-            <a href="{% url 'news_feed' profile.pk %}" class="news-feed-btn">View News Feed</a>
+            <a href="{% url 'update_profile' %}" class="update-profile-btn">Update Profile</a>
+            <a href="{% url 'create_status' %}" class="create-status-btn">Create Status Message</a>
+            <a href="{% url 'friend_suggestions' %}" class="friend-suggestions-btn">Friend Suggestions</a>
+            <a href="{% url 'news_feed' %}" class="news-feed-btn">View News Feed</a>
         {% endif %}
     </div>
 

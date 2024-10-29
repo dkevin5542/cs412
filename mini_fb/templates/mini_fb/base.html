@@ -119,12 +119,13 @@
         <nav>
             <a href="{% url 'base' %}">Home</a>
             <a href="{% url 'show_all_profile' %}">Show All Profiles</a>
-            {% if profile %}
-                <a href="{% url 'news_feed' profile.pk %}">News Feed</a>
-            {% endif %}
             
             {% if user.is_authenticated %}
+                <a href="{% url 'news_feed' %}">News Feed</a>
+                <a href="{% url 'friend_suggestions' %}">Friend Suggestions</a>
                 <a href="{% url 'create_profile' %}">Create New Profile</a>
+                
+                <!-- Logout form with styled button -->
                 <form action="{% url 'logout' %}" method="post" class="logout-form">
                     {% csrf_token %}
                     <button type="submit" class="logout-btn">Logout</button>

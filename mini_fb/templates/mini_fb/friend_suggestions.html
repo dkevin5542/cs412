@@ -92,7 +92,7 @@
             {% endif %}
         </a>
         <h3>{{ friend.first_name }} {{ friend.last_name }}</h3>
-        <a href="{% url 'add_friend' profile.pk friend.pk %}" class="add-friend-btn">Add Friend</a>
+        <a href="{% url 'add_friend' friend.pk %}" class="add-friend-btn">Add Friend</a>
     </div>
     {% endfor %}
 </div>
