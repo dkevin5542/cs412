@@ -34,19 +34,22 @@ class ShowProfilePageView(DetailView):
     template_name = "mini_fb/show_profile.html"
     context_object_name = "profile"
 
-class CreateProfileView(CreateView):
-    '''A view to create a new profile and save it to the database.'''
+class CreateProfileView(LoginRequiredMixin, CreateView):
+    """
+    A view to create a new profile and associate it with the logged-in user.
+    """
     form_class = CreateProfileForm
     template_name = "mini_fb/create_profile_form.html"
 
-    def get_success_url(self):
-        '''Redirect to the profile detail page after creation.'''
-        return self.object.get_absolute_url()
-
     def form_valid(self, form):
-        '''Save the profile and redirect to its detail page.'''
+        # Set the user to the logged-in user before saving
+        form.instance.user = self.request.user
         self.object = form.save()
         return super().form_valid(form)
+
+    def get_success_url(self):
+        # Redirect to the profile detail page after creation
+        return reverse('profile', kwargs={'pk': self.object.pk})
     
 class CreateStatusMessageView(LoginRequiredMixin, CreateView):
     '''Create a new status message for a profile.'''

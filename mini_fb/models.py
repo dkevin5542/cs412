@@ -16,7 +16,7 @@ class Profile(models.Model):
     email = models.EmailField(blank=False, null=True, unique=True)
     # image_url = models.URLField(blank=True) 
     image_file = models.ImageField(blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE) ## NEW
+    user = models.ForeignKey(User, on_delete=models.CASCADE) 
 
 
     

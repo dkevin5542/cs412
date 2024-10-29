@@ -96,7 +96,7 @@
         main p {
             font-size: 16px;
             color: #555;
-            text-align: justify;
+            /* text-align: justify; */
         }
 
         /* Footer styling */
@@ -119,13 +119,12 @@
         <nav>
             <a href="{% url 'base' %}">Home</a>
             <a href="{% url 'show_all_profile' %}">Show All Profiles</a>
-            <a href="{% url 'create_profile' %}">Create New Profile</a>
             {% if profile %}
                 <a href="{% url 'news_feed' profile.pk %}">News Feed</a>
             {% endif %}
             
             {% if user.is_authenticated %}
-                <!-- Logout form with styled button -->
+                <a href="{% url 'create_profile' %}">Create New Profile</a>
                 <form action="{% url 'logout' %}" method="post" class="logout-form">
                     {% csrf_token %}
                     <button type="submit" class="logout-btn">Logout</button>
@@ -150,5 +149,4 @@
     </footer>
 </body>
 </html>
-
 
