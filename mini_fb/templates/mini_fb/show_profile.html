@@ -10,10 +10,12 @@
     }
 
     .grid-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+        display: flex;
+        flex-direction: column;
         gap: 20px;
         padding: 20px;
+        max-width: 900px;
+        margin: 0 auto;
     }
 
     .profile-widget {
@@ -27,9 +29,9 @@
 
     .profile-widget img {
         width: 150px;
-        height: 150px; 
-        object-fit: cover; 
-        border-radius: 50%; 
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
         margin-bottom: 15px;
     }
 
@@ -48,24 +50,7 @@
         color: #555;
     }
 
-    .update-profile-btn {
-        display: inline-block;
-        padding: 10px 15px;
-        background-color: #1877f2;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        text-align: center;
-        text-decoration: none; 
-        margin-top: 10px;
-        transition: background-color 0.3s ease;
-    }
-
-    .update-profile-btn:hover {
-        background-color: #155bb5;
-    }
-
+    .update-profile-btn,
     .create-status-btn,
     .friend-suggestions-btn,
     .news-feed-btn {
@@ -77,19 +62,14 @@
         border-radius: 8px;
         font-size: 16px;
         text-align: center;
-        text-decoration: none; 
+        text-decoration: none;
         margin-top: 10px;
         transition: background-color 0.3s ease;
     }
 
-    .create-status-btn:hover {
-        background-color: #155bb5;
-    }
-
-    .friend-suggestions-btn:hover {
-        background-color: #155bb5;
-    }
-
+    .update-profile-btn:hover,
+    .create-status-btn:hover,
+    .friend-suggestions-btn:hover,
     .news-feed-btn:hover {
         background-color: #155bb5;
     }
@@ -123,15 +103,15 @@
     .status-message img {
         width: 200px;
         height: 200px;
-        object-fit: cover; 
-        border-radius: 5px; 
-        margin: 10px auto 0 auto; 
-        display: block; 
+        object-fit: cover;
+        border-radius: 5px;
+        margin: 10px auto 0 auto;
+        display: block;
     }
 
     .form-actions {
         display: flex;
-        justify-content: center; 
+        justify-content: center;
         margin-top: 10px;
     }
 
@@ -142,9 +122,9 @@
         border-radius: 5px;
         font-size: 14px;
         cursor: pointer;
-        text-decoration: none; 
+        text-decoration: none;
         transition: background-color 0.3s ease;
-        margin-right: 10px; 
+        margin-right: 10px;
     }
 
     .update-status-btn {
@@ -168,27 +148,39 @@
     .placeholder-container {
         display: flex;
         justify-content: center;
-        align-items: center; 
+        align-items: center;
         width: 150px;
-        height: 150px; 
-        margin: 0 auto 15px auto; 
-        background-color: #ccc; 
-        border-radius: 50%; 
+        height: 150px;
+        margin: 0 auto 15px auto;
+        background-color: #ccc;
+        border-radius: 50%;
     }
 
+    /* Friends section styling */
     .friends-container {
-        margin-top: 20px;
+        border-top: 1px solid #ddd;
+        padding-top: 20px;
     }
 
     .friends-container h2 {
         font-size: 1.8rem;
         color: #333;
+        text-align: center;
+        margin-bottom: 15px;
     }
 
     .friend-item {
         display: flex;
         align-items: center;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+    }
+
+    .friend-item:hover {
+        background-color: #e8e8e8;
     }
 
     .friend-item a {
@@ -196,67 +188,46 @@
         align-items: center;
         text-decoration: none;
         color: black;
-        transition: color 0.3s ease;
-    }
-
-    .friend-item a:hover {
-        color: #155bb5;
+        gap: 15px;
     }
 
     .friend-item img {
-        width: 80px;
-        height: 80px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
         object-fit: cover;
-        margin-right: 20px;
         border: 2px solid #ccc;
-        transition: transform 0.3s ease;
     }
 
-    .friend-item a:hover img {
-        transform: scale(1.05);
-    }
-
-    .friend-item a .friend-name {
-        font-size: 1.5rem;
+    .friend-item .friend-name {
+        font-size: 1.2rem;
         font-weight: bold;
-    }
-
-    .friend-placeholder {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        background-color: #ccc;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        color: white;
-        margin-right: 20px;
-        transition: transform 0.3s ease;
-    }
-
-    .friend-item a:hover .friend-placeholder {
-        transform: scale(1.05);
+        color: #333;
     }
 </style>
 
 <main class="grid-container">
+    <!-- Profile Details -->
     <div class="profile-widget">
         {% if profile.image_file %}
             <img src="{{ profile.image_file.url }}" alt="Profile image of {{ profile.first_name }}">
         {% else %}
-            <div class="placeholder-container"></div> 
+            <div class="placeholder-container"></div>
         {% endif %}
         <h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
         <h3>{{ profile.city }}</h3>
         <h4>{{ profile.email }}</h4>
-        <a href="{% url 'update_profile' profile.pk %}" class="update-profile-btn">Update Profile</a>
-        <a href="{% url 'create_status' profile.pk %}" class="create-status-btn">Create Status Message</a>
-        <a href="{% url 'friend_suggestions' profile.pk %}" class="friend-suggestions-btn">Friend Suggestions</a>
-        <a href="{% url 'news_feed' profile.pk %}" class="news-feed-btn">View News Feed</a>
+
+        {% if user.is_authenticated and user == profile.user %}
+            <!-- Only the profile owner can see these links -->
+            <a href="{% url 'update_profile' profile.pk %}" class="update-profile-btn">Update Profile</a>
+            <a href="{% url 'create_status' profile.pk %}" class="create-status-btn">Create Status Message</a>
+            <a href="{% url 'friend_suggestions' profile.pk %}" class="friend-suggestions-btn">Friend Suggestions</a>
+            <a href="{% url 'news_feed' profile.pk %}" class="news-feed-btn">View News Feed</a>
+        {% endif %}
     </div>
 
+    <!-- Status Messages -->
     <div>
         <h2>Status Messages</h2>
         <div class="status-container">
@@ -269,15 +240,19 @@
                 <img src="{{ img.image_file.url }}" alt="Image for {{ status.message }}" />
                 {% endfor %}
 
-                <div class="form-actions">
-                    <a href="{% url 'update_status' status.pk %}" class="update-status-btn">Update Status</a>
-                    <a href="{% url 'delete_status' status.pk %}" class="delete-status-btn">Delete Status</a>
-                </div>
+                {% if user.is_authenticated and user == profile.user %}
+                    <!-- Only the profile owner can update or delete statuses -->
+                    <div class="form-actions">
+                        <a href="{% url 'update_status' status.pk %}" class="update-status-btn">Update Status</a>
+                        <a href="{% url 'delete_status' status.pk %}" class="delete-status-btn">Delete Status</a>
+                    </div>
+                {% endif %}
             </div>
             {% endfor %}
         </div>
     </div>
 
+    <!-- Friends Section at the Bottom -->
     <div class="friends-container">
         <h2>Friends</h2>
         {% if profile.get_friends %}
@@ -303,6 +278,7 @@
     </div>
 </main>
 {% endblock %}
+
 
 
 

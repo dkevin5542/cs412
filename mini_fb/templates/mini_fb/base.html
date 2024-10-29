@@ -10,57 +10,106 @@
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
+            color: #333;
         }
 
         header {
             background-color: #4267B2;
             color: white;
-            padding: 10px 0;
+            padding: 15px 0;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
 
         header h1 {
             margin: 0;
-            font-size: 24px;
+            font-size: 28px;
+            font-weight: 600;
         }
 
         nav {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            align-items: center;
+            gap: 20px;
             padding: 10px 0;
             background-color: #4267B2;
         }
 
-        nav a {
+        nav a,
+        .logout-btn {
             color: white;
             text-decoration: none;
             font-size: 16px;
-            letter-spacing: 0.5px;
-            padding: 10px 15px;
-            transition: color 0.3s ease, transform 0.3s ease;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: color 0.3s ease, background-color 0.3s ease;
         }
 
-        nav a:hover {
-            color: #1abc9c;
-            transform: translateY(-2px);
+        nav a:hover,
+        .logout-btn:hover {
+            background-color: #1abc9c;
+            color: white;
         }
 
+        /* Logout button styling to match other navigation links */
+        .logout-form {
+            display: inline;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* Welcome text styling */
+        .auth-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #e0e0e0;
+        }
+
+        /* Main content styling */
         main {
-            max-width: 800px;
+            max-width: 900px;
             margin: 20px auto;
-            padding: 20px;
+            padding: 25px;
             background-color: white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            border-radius: 10px;
+            line-height: 1.6;
         }
 
+        main h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        main p {
+            font-size: 16px;
+            color: #555;
+            text-align: justify;
+        }
+
+        /* Footer styling */
         footer {
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             background-color: #4267B2;
             color: white;
+            font-size: 14px;
+        }
+
+        footer p {
+            margin: 0;
         }
     </style>
 </head>
@@ -72,7 +121,18 @@
             <a href="{% url 'show_all_profile' %}">Show All Profiles</a>
             <a href="{% url 'create_profile' %}">Create New Profile</a>
             {% if profile %}
-            <a href="{% url 'news_feed' profile.pk %}">News Feed</a>
+                <a href="{% url 'news_feed' profile.pk %}">News Feed</a>
+            {% endif %}
+            
+            {% if user.is_authenticated %}
+                <!-- Logout form with styled button -->
+                <form action="{% url 'logout' %}" method="post" class="logout-form">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-btn">Logout</button>
+                </form>
+                <div class="auth-info">Welcome, {{ user.username }}</div>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
             {% endif %}
         </nav>
     </header>
@@ -90,4 +150,5 @@
     </footer>
 </body>
 </html>
+
 

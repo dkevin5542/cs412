@@ -1,0 +1,70 @@
+{% extends 'mini_fb/base.html' %}
+
+{% block content %}
+<style>
+    .login-container {
+        max-width: 400px;
+        margin: 20px auto;
+        padding: 50px;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    h1 {
+        color: #4267B2;
+        font-size: 24px;
+        margin-bottom: 20px;
+        text-align: center;
+
+    }
+
+    .login-form label {
+        display: block;
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 5px;
+        text-align: left;
+    }
+
+    .login-form input[type="text"],
+    .login-form input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .login-button {
+        width: 100%;
+        padding: 12px 18px;
+        background-color: #1877f2;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        width: 48%; 
+
+    }
+
+    .login-button:hover {
+        background-color: #155bb5;
+    }
+</style>
+
+<h1>Login</h1>
+<div class="login-container">
+    <form method="POST" action="{% url 'login' %}" class="login-form">
+        {% csrf_token %}
+        {{ form }}
+        <input type="hidden" name="next" value="{% url 'show_all_profile' %}">
+        <input type="submit" value="Login" class="login-button">
+    </form>
+</div>
+
+{% endblock %}

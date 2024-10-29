@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from django.urls import reverse
 from django.core.files.images import ImageFile 
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 
 from .models import * 
@@ -46,112 +48,96 @@ class CreateProfileView(CreateView):
         self.object = form.save()
         return super().form_valid(form)
     
-class CreateStatusMessageView(CreateView):
-    '''A view to create a new status message for a profile and save it to the database.'''
+class CreateStatusMessageView(LoginRequiredMixin, CreateView):
+    '''Create a new status message for a profile.'''
     form_class = CreateStatusMessageForm
     template_name = "mini_fb/create_status_form.html"
 
+    def get_login_url(self) -> str:
+        '''Return the URL required for login'''
+        return reverse('login')
+
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-
         context = super().get_context_data(**kwargs)
-
         profile = Profile.objects.get(pk=self.kwargs['pk'])
-        
         context['profile'] = profile
         return context
 
     def get_success_url(self) -> str:
-        '''Return the URL to redirect to on success.'''
-
         profile = Profile.objects.get(pk=self.kwargs['pk'])
-        return reverse('profile', kwargs={'pk':profile.pk})
+        return reverse('profile', kwargs={'pk': profile.pk})
 
     def form_valid(self, form):
-            '''This method is called after the form is validated and before saving data to the database.'''
-            profile = Profile.objects.get(pk=self.kwargs['pk'])
-            form.instance.profile = profile 
-
-            # Save the form to create the status message
-            sm = form.save()
-
-            # Handle the file uploads
-            files = self.request.FILES.getlist('files')
-
-            for file in files:
-                # Create an Image object for each file and associate it with the status message
-                img = Image(status_message=sm, image_file=file)  # Assuming Image has fields: status_message (FK), image_file (ImageField)
-                img.save()
-
-            return super().form_valid(form)
+        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        form.instance.profile = profile
+        sm = form.save()
+        files = self.request.FILES.getlist('files')
+        for file in files:
+            img = Image(status_message=sm, image_file=file)
+            img.save()
+        return super().form_valid(form)
     
 
-class UpdateProfileView(UpdateView):
-    '''A view to update a profile and save it to the database.'''
+class UpdateProfileView(LoginRequiredMixin, UpdateView):
+    '''Update a profile.'''
     form_class = UpdateProfileForm
     template_name = "mini_fb/update_profile_form.html"
-    model = Profile 
+    model = Profile
+
+    def get_login_url(self) -> str:
+        '''Return the URL required for login'''
+        return reverse('login')
 
     def form_valid(self, form):
-        '''
-        Handle the form submission to create a new Profile object.
-        '''
         return super().form_valid(form)
     
 
-class UpdateStatusMessageView(UpdateView):
-    '''A view to update a profile and save it to the database.'''
+class UpdateStatusMessageView(LoginRequiredMixin, UpdateView):
+    '''Update a status message.'''
     form_class = UpdateStatusForm
     template_name = "mini_fb/update_status_form.html"
-    model = StatusMessage 
+    model = StatusMessage
     context_object_name = "updateStatus"
 
-    def form_valid(self, form):
-        '''
-        Handle the form submission to create a new Profile object.
-        '''
-        return super().form_valid(form)
-    
-    def get_success_url(self):
-        '''Return the URL to which we should be directed after the delete.'''
-        # Get the profile associated with the status message
-        profile = self.object.profile
+    def get_login_url(self) -> str:
+        '''Return the URL required for login'''
+        return reverse('login')
 
-        # Redirect to the profile page after deletion
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        profile = self.object.profile
         return reverse('profile', kwargs={'pk': profile.pk})
 
 
 
-class DeleteStatusMessageView(DeleteView):
-    '''A view that deletes a status message and remove it from the database'''
+class DeleteStatusMessageView(LoginRequiredMixin, DeleteView):
+    '''Delete a status message.'''
     template_name = "mini_fb/delete_status_form.html"
     model = StatusMessage
     context_object_name = 'status'
 
-    def get_success_url(self):
-        '''Return the URL to which we should be directed after the delete.'''
-        # Get the profile associated with the status message
-        profile = self.object.profile
+    def get_login_url(self) -> str:
+        '''Return the URL required for login'''
+        return reverse('login')
 
-        # Redirect to the profile page after deletion
+    def get_success_url(self):
+        profile = self.object.profile
         return reverse('profile', kwargs={'pk': profile.pk})
 
-class CreateFriendView(View):
-    """
-    A view that handles adding a friend based on the URL parameters.
-    """
+class CreateFriendView(LoginRequiredMixin, View):
+    '''Handle adding a friend.'''
+    def get_login_url(self) -> str:
+        '''Return the URL required for login'''
+        return reverse('login')
+
     def dispatch(self, request, *args, **kwargs):
-        # Extract the pk (the profile initiating the friend request) and other_pk (the profile to be added as a friend)
         profile_pk = kwargs.get('pk')
         other_profile_pk = kwargs.get('other_pk')
-
-        # Get the two Profile objects
         profile = get_object_or_404(Profile, pk=profile_pk)
         other_profile = get_object_or_404(Profile, pk=other_profile_pk)
-
-        # Call the add_friend method to add the friend if possible
-        result_message = profile.add_friend(other_profile)
-
-        # Redirect back to the original profile page
+        profile.add_friend(other_profile)
         return redirect('profile', pk=profile_pk)
 
 
