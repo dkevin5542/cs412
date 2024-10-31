@@ -1,70 +1,105 @@
 {% extends 'mini_fb/base.html' %}
 
 {% block content %}
+<h1 align="center">Login</h1>
+
 <style>
+    /* Center the login container */
     .login-container {
         max-width: 400px;
-        margin: 20px auto;
-        padding: 50px;
-        background-color: white;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        text-align: center;
+        margin: 50px auto;
+        padding: 40px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
+        font-family: 'Arial', sans-serif;
     }
 
-    h1 {
+    /* Style the heading */
+    .login-container h1 {
+        text-align: center;
         color: #4267B2;
-        font-size: 24px;
+        font-size: 28px;
         margin-bottom: 20px;
-        text-align: center;
-
     }
 
+    /* Style form labels */
     .login-form label {
         display: block;
-        font-size: 16px;
+        font-weight: bold;
         color: #333;
         margin-bottom: 5px;
         text-align: left;
     }
 
+    /* Style input fields */
     .login-form input[type="text"],
     .login-form input[type="password"] {
         width: 100%;
-        padding: 10px;
+        padding: 12px;
         margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
+        border: 1px solid #dcdfe6;
+        border-radius: 8px;
+        background-color: #f5f6f7;
         font-size: 16px;
+        transition: border-color 0.3s ease;
+    }
+
+    .login-form input[type="text"]:focus,
+    .login-form input[type="password"]:focus {
+        border-color: #4267B2;
+        outline: none;
     }
 
     .login-button {
         width: 100%;
-        padding: 12px 18px;
-        background-color: #1877f2;
-        color: white;
+        padding: 12px;
+        background-color: #4267B2;
         border: none;
-        border-radius: 5px;
-        font-size: 16px;
+        border-radius: 8px;
+        font-size: 18px;
+        color: white;
         cursor: pointer;
         transition: background-color 0.3s ease;
-        width: 48%; 
-
     }
 
     .login-button:hover {
-        background-color: #155bb5;
+        background-color: #365899;
+    }
+
+    .register-section {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 16px;
+        color: #555;
+    }
+
+    .register-section a {
+        color: #4267B2;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+    .register-section a:hover {
+        color: #365899;
     }
 </style>
 
-<h1>Login</h1>
 <div class="login-container">
     <form method="POST" action="{% url 'login' %}" class="login-form">
         {% csrf_token %}
-        {{ form }}
+        {{ form.as_p }}
         <input type="hidden" name="next" value="{% url 'show_all_profile' %}">
         <input type="submit" value="Login" class="login-button">
     </form>
+
+    <div class="register-section">
+        <hr>
+        Don't have an account yet?<br>
+        <a href="{% url 'register' %}">Register here</a>.
+    </div>
 </div>
 
 {% endblock %}
+

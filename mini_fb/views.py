@@ -1,9 +1,14 @@
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.core.files.images import ImageFile 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.forms import UserCreationForm 
+from django.contrib.auth.models import User 
+from django.contrib.auth import login
+from django.contrib.auth.mixins import AccessMixin
+
 
 
 
@@ -41,13 +46,21 @@ class ShowProfilePageView(DetailView):
         context['is_own_profile'] = profile.user == self.request.user  # Check if the profile belongs to the logged-in user
         return context
 
-class CreateProfileView(LoginRequiredMixin, CreateView):
+class CreateProfileView(AccessMixin, CreateView):
     """
     A view to create a new profile and associate it with the logged-in user.
     """
-    model = Profile 
+    model = Profile
     form_class = CreateProfileForm
     template_name = "mini_fb/create_profile_form.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        # If the user is not authenticated, redirect them to the registration form
+        if not request.user.is_authenticated:
+            return redirect(reverse('register'))
+
+        # If the user is authenticated, proceed with the normal dispatch
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         # Set the user to the logged-in user before saving
@@ -211,3 +224,43 @@ class ShowNewsFeedView(LoginRequiredMixin, DetailView):
         context['news_feed'] = profile.get_news_feed()
         return context
 
+
+class RegistrationView(CreateView):
+    '''Display and process the UserVreationForm for account registration.'''
+
+    template_name = 'mini_fb/register.html'
+    form_class = UserCreationForm
+
+
+    def dispatch(self, *args, **kwargs):
+        '''Handle the User creation process.'''
+
+        # we handle the HTTP POST request
+        if self.request.POST:
+            
+            print(f"self.request.POST={self.request.POST}")
+            # reconstruct the UserCreationForm from the HTTP POST
+            form = UserCreationForm(self.request.POST)
+            # print(f'form={form}')
+            if not form.is_valid():
+                print(f'form.errors={form.errors}')
+                # let's the CreateView superclass handle this problem!
+                return super().dispatch(*args, **kwargs)
+
+            # save the new User object
+            user = form.save() # creates a new instance of User object in the database
+            print(f"RegistrationView.dispatch: created user {user}")
+
+            # log in the User
+            login(self.request, user)
+            print(f"RegistrationView.dispatch, user {user} is logged in.")
+
+            ## mini_fb note: attach user to Profile creation form before saving.
+
+
+
+            # redirect the user to some page view...
+            return redirect(reverse('login'))
+
+        # let the superclass CreateView handle the HTTP GET request:
+        return super().dispatch(*args, **kwargs)
