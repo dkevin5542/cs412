@@ -1,4 +1,4 @@
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from django.urls import reverse, reverse_lazy
@@ -124,7 +124,6 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
         Redirect to the profile page after a successful update.
         """
         return reverse('profile', kwargs={'pk': self.get_object().pk})
-    
 
 class UpdateStatusMessageView(LoginRequiredMixin, UpdateView):
     '''Update a status message.'''
@@ -137,13 +136,19 @@ class UpdateStatusMessageView(LoginRequiredMixin, UpdateView):
         '''Return the URL required for login'''
         return reverse('login')
 
+    def dispatch(self, request, *args, **kwargs):
+        # Only allow the user associated with the profile to update the status
+        status_message = self.get_object()
+        if status_message.profile.user != request.user:
+            return HttpResponseForbidden("You are not allowed to edit this status message.")
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
         return super().form_valid(form)
 
     def get_success_url(self):
         profile = self.object.profile
         return reverse('profile', kwargs={'pk': profile.pk})
-
 
 
 class DeleteStatusMessageView(LoginRequiredMixin, DeleteView):
@@ -156,9 +161,50 @@ class DeleteStatusMessageView(LoginRequiredMixin, DeleteView):
         '''Return the URL required for login'''
         return reverse('login')
 
+    def dispatch(self, request, *args, **kwargs):
+        # Only allow the user associated with the profile to delete the status
+        status_message = self.get_object()
+        if status_message.profile.user != request.user:
+            return HttpResponseForbidden("You are not allowed to delete this status message.")
+        return super().dispatch(request, *args, **kwargs)
+
     def get_success_url(self):
         profile = self.object.profile
-        return reverse('profile', kwargs={'pk': profile.pk})
+        return reverse('profile', kwargs={'pk': profile.pk}) 
+
+# class UpdateStatusMessageView(LoginRequiredMixin, UpdateView):
+#     '''Update a status message.'''
+#     form_class = UpdateStatusForm
+#     template_name = "mini_fb/update_status_form.html"
+#     model = StatusMessage
+#     context_object_name = "updateStatus"
+
+#     def get_login_url(self) -> str:
+#         '''Return the URL required for login'''
+#         return reverse('login')
+
+#     def form_valid(self, form):
+#         return super().form_valid(form)
+
+#     def get_success_url(self):
+#         profile = self.object.profile
+#         return reverse('profile', kwargs={'pk': profile.pk})
+
+
+
+# class DeleteStatusMessageView(LoginRequiredMixin, DeleteView):
+#     '''Delete a status message.'''
+#     template_name = "mini_fb/delete_status_form.html"
+#     model = StatusMessage
+#     context_object_name = 'status'
+
+#     def get_login_url(self) -> str:
+#         '''Return the URL required for login'''
+#         return reverse('login')
+
+#     def get_success_url(self):
+#         profile = self.object.profile
+#         return reverse('profile', kwargs={'pk': profile.pk})
 
 class CreateFriendView(LoginRequiredMixin, View):
     """
