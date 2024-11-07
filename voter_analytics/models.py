@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 class Voter(models.Model):
     """
@@ -43,48 +44,59 @@ class Voter(models.Model):
         return f"{self.first_name} {self.last_name} - {self.party_affiliation}"
 
     @classmethod
-    def load_data(cls, file_path):
+    def load_data(cls):
         """
-        Class method to load voter data from a CSV file into the database.
-        
-        Parameters:
-            file_path (str): Path to the CSV file containing voter data.
-
-        The CSV file must include the following fields:
-          - Last Name, First Name, Residential Address - Street Number,
-            Residential Address - Street Name, Residential Address - Apartment Number,
-            Residential Address - Zip Code, Date of Birth, Date of Registration,
-            Party Affiliation, Precinct Number, v20state, v21town, v21primary,
-            v22general, v23town, voter_score
+        Load data records from a CSV file into model instances. 
+        Clears existing records and loads new data from a specified file.
         """
-        import csv
-        from datetime import datetime
+        # Delete all records to clear the database
+        cls.objects.all().delete()
 
-        with open(file_path, mode='r') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                # Convert 'TRUE'/'FALSE' string values to boolean
-                def to_bool(value):
-                    return value.strip().upper() == 'TRUE'
-                
-                # Create a new Voter instance for each row in the CSV file
-                voter = cls(
-                    last_name=row['Last Name'],
-                    first_name=row['First Name'],
-                    residential_street_number=row['Residential Address - Street Number'],
-                    residential_street_name=row['Residential Address - Street Name'],
-                    residential_apartment_number=row.get('Residential Address - Apartment Number', None),
-                    residential_zip_code=row['Residential Address - Zip Code'],
-                    date_of_birth=datetime.strptime(row['Date of Birth'], '%Y-%m-%d').date(),
-                    date_of_registration=datetime.strptime(row['Date of Registration'], '%Y-%m-%d').date(),
-                    party_affiliation=row['Party Affiliation'].strip(),
-                    precinct_number=row['Precinct Number'],
-                    v20state=to_bool(row['v20state']),
-                    v21town=to_bool(row['v21town']),
-                    v21primary=to_bool(row['v21primary']),
-                    v22general=to_bool(row['v22general']),
-                    v23town=to_bool(row['v23town']),
-                    voter_score=int(row['voter_score']),
-                )
-                # Save the voter instance to the database
-                voter.save()
+        # Define the file path (update with your own path as needed)
+        filename = 'C:/Users/dongk/django/voter_analytics/newton_voters.csv'
+        # On Windows: '/C/Users/YOURNAME/Desktop/2023_chicago_results.csv'
+
+        # Open the file for reading
+        with open(filename, mode='r') as file:
+            headers = file.readline()  # Read and discard the header line
+            print(headers)  # Optional: print headers for debugging
+
+            # Loop to read each line in the file
+            for line in file:
+                try:
+                    # Split the line by commas to get individual fields
+                    fields = line.strip().split(',')
+
+                    # Convert 'TRUE'/'FALSE' strings to boolean
+                    def to_bool(value):
+                        return value.strip().upper() == 'TRUE'
+
+                    # Create a new Voter instance using the fields from the CSV line
+                    voter = cls(
+                        last_name=fields[0],
+                        first_name=fields[1],
+                        residential_street_number=fields[2],
+                        residential_street_name=fields[3],
+                        residential_apartment_number=fields[4] if fields[4] else None,
+                        residential_zip_code=fields[5],
+                        date_of_birth=datetime.strptime(fields[6], '%Y-%m-%d').date(),
+                        date_of_registration=datetime.strptime(fields[7], '%Y-%m-%d').date(),
+                        party_affiliation=fields[8].strip(),
+                        precinct_number=fields[9],
+                        v20state=to_bool(fields[10]),
+                        v21town=to_bool(fields[11]),
+                        v21primary=to_bool(fields[12]),
+                        v22general=to_bool(fields[13]),
+                        v23town=to_bool(fields[14]),
+                        voter_score=int(fields[15]),
+                    )
+
+                    # Save the voter instance to the database
+                    voter.save()
+                    print(f'Created voter: {voter}')  # Optional: print confirmation
+
+                except Exception as e:
+                    # If an error occurs, print the line and the error message
+                    print(f"Exception processing line: {line}")
+                    print(f"Error: {e}")
+
