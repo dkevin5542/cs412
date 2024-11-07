@@ -54,12 +54,10 @@ class Voter(models.Model):
 
         # Define the file path (update with your own path as needed)
         filename = 'C:/Users/dongk/django/voter_analytics/newton_voters.csv'
-        # On Windows: '/C/Users/YOURNAME/Desktop/2023_chicago_results.csv'
 
         # Open the file for reading
         with open(filename, mode='r') as file:
-            headers = file.readline()  # Read and discard the header line
-            print(headers)  # Optional: print headers for debugging
+            headers = file.readline()  
 
             # Loop to read each line in the file
             for line in file:
