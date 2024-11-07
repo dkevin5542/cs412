@@ -1,0 +1,125 @@
+{% extends 'voter_analytics/base.html' %}
+
+{% block content %}
+<div class="container">
+    
+    <h1>Voter Analytics - Graphs</h1>
+
+    <div class="filter-section">
+        <form method="get" class="filter-form">
+            {{ filter_form.as_p }}
+            <button type="submit" class="filter-button">Filter</button>
+        </form>
+    </div>
+
+    <div class="graph-section">
+        <h2>Distribution by Year of Birth</h2>
+        <div class="graph-container">
+            <div class="graph-content">
+                {{ birth_hist|safe }}
+            </div>
+        </div>
+    </div>
+
+    <div class="graph-section">
+        <h2>Distribution by Party Affiliation</h2>
+        <div class="graph-container">
+            <div class="graph-content">
+                {{ party_pie|safe }}
+            </div>
+        </div>
+    </div>
+
+    <div class="graph-section">
+        <h2>Participation in Elections</h2>
+        <div class="graph-container">
+            <div class="graph-content">
+                {{ election_hist|safe }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 5000px; 
+        margin: 0 auto;
+        padding: 2rem;
+        background-color: #f9f9f9;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        text-align: center; 
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+        color: #0044cc;
+    }
+
+    .filter-section {
+        margin-bottom: 2.5rem;
+        padding: 1rem;
+        background-color: #f4f4f9;
+        border-radius: 8px;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .filter-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .filter-button {
+        background-color: #0044cc;
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .filter-button:hover {
+        background-color: #003399;
+    }
+
+    .graph-section {
+        margin-bottom: 2.5rem;
+    }
+
+    .graph-section h2 {
+        font-size: 1.75rem;
+        color: #333;
+        margin-bottom: 1.5rem;
+    }
+
+    .graph-container {
+        display: flex;
+        justify-content: center;
+        background-color: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        width: 100%; 
+        max-width: 5000px; 
+        margin: 0 auto;
+    }
+
+    .graph-content {
+        display: inline-block;
+        width: 100%;
+        max-width: 90%;
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+
+
+
+
+

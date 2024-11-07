@@ -1,0 +1,101 @@
+{% extends "voter_analytics/base.html" %}
+
+{% block title %}Voter Details{% endblock %}
+
+{% block content %}
+<style>
+    .details-container h1 {
+        font-size: 2rem;
+        color: #333;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        font-weight: bold;
+    }
+
+    p, li {
+        font-size: 1rem;
+        color: #555;
+        line-height: 1.6;
+    }
+
+    p strong {
+        color: #333;
+    }
+
+    .details-container {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 1.5rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+
+    .details-container ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .details-container li {
+        padding: 0.5rem 0;
+    }
+
+    .details-container h3 {
+        font-size: 1.2rem;
+        color: #333;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+
+    .btn-link {
+        display: inline-block;
+        margin-top: 1.5rem;
+        color: #0044cc;
+        text-decoration: none;
+        font-weight: bold;
+        border: 1px solid #0044cc;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .btn-link:hover {
+        background-color: #0044cc;
+        color: white;
+    }
+
+    .google-maps-link {
+        display: inline-block;
+        margin-top: 1rem;
+        color: #007BFF;
+        text-decoration: underline;
+    }
+
+</style>
+
+<div class="details-container">
+    <h1>{{ voter.first_name|upper }} {{ voter.last_name|upper }}</h1>
+
+    <p><strong>Address:</strong> {{ voter.residential_street_number }} {{ voter.residential_street_name }}{% if voter.residential_apartment_number %}, Apartment {{ voter.residential_apartment_number }}{% endif %}, Zip Code {{ voter.residential_zip_code }}</p>
+    <p><strong>Date of Birth:</strong> {{ voter.date_of_birth|date:"M d, Y" }}</p>
+    <p><strong>Date of Registration:</strong> {{ voter.date_of_registration|date:"M d, Y" }}</p>
+    <p><strong>Party Affiliation:</strong> {{ voter.party_affiliation }}</p>
+    <p><strong>Precinct Number:</strong> {{ voter.precinct_number }}</p>
+    <p><strong>Voter Score:</strong> {{ voter.voter_score }}</p>
+
+    <h3>Past Elections</h3>
+    <ul>
+        <li>2020 State Election: {{ voter.v20state|yesno:"Yes,No" }}</li>
+        <li>2021 Town Election: {{ voter.v21town|yesno:"Yes,No" }}</li>
+        <li>2021 Primary Election: {{ voter.v21primary|yesno:"Yes,No" }}</li>
+        <li>2022 General Election: {{ voter.v22general|yesno:"Yes,No" }}</li>
+        <li>2023 Town Election: {{ voter.v23town|yesno:"Yes,No" }}</li>
+    </ul>
+
+    <a href="https://www.google.com/maps/search/{{ voter.residential_street_number }}+{{ voter.residential_street_name }},+{{ voter.residential_zip_code }}" target="_blank" class="google-maps-link">View on Google Maps</a>
+    <br>
+    <a href="{% url 'voters' %}" class="btn-link">Back to Voter List</a>
+</div>
+{% endblock %}
+

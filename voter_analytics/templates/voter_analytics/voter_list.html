@@ -1,0 +1,169 @@
+{% extends "voter_analytics/base.html" %}
+
+{% block content %}
+<style>
+    h1 {
+        text-align: center;
+        font-size: 2rem;
+        color: #333;
+        margin-bottom: 1rem;
+    }
+
+    form {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+    }
+
+    form button {
+        background-color: #0044cc;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 1rem;
+        margin-left: 1rem;
+        transition: background-color 0.3s;
+    }
+
+    form button:hover {
+        background-color: #003399;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1rem;
+    }
+
+    th, td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f4f4f9;
+        color: #333;
+        font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #e6f2ff;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 1.5rem;
+    }
+
+    .pagination a {
+        color: #0044cc;
+        text-decoration: none;
+        padding: 0.5rem 0.75rem;
+        margin: 0 0.25rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .pagination a:hover {
+        background-color: #0044cc;
+        color: white;
+    }
+
+    .pagination .current-page {
+        font-weight: bold;
+        color: white;
+        background-color: #0044cc;
+        padding: 0.5rem 0.75rem;
+        border-radius: 4px;
+    }
+
+    /* Filter Form Styling */
+    .filter_form {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+        max-width: 600px;
+        margin: auto;
+    }
+
+    .filter_form label {
+        font-size: 0.9rem;
+        color: #555;
+    }
+
+    .filter_form select, .filter_form input[type="checkbox"] {
+        width: 100%;
+        padding: 0.4rem;
+        font-size: 0.9rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    a.details-link {
+        color: #0044cc;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s;
+    }
+
+    a.details-link:hover {
+        color: #003399;
+        text-decoration: underline;
+    }
+</style>
+
+<h1>Voter List</h1>
+
+<form method="get" class="filter_form">
+    {{ filter_form.as_p }}
+    <button type="submit">Filter</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Address</th>
+            <th>Date of Birth</th>
+            <th>Party Affiliation</th>
+            <th>Voter Score</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for voter in voters %}
+        <tr>
+            <td>{{ voter.first_name }}</td>
+            <td>{{ voter.last_name }}</td>
+            <td>{{ voter.residential_street_number }} {{ voter.residential_street_name }}</td>
+            <td>{{ voter.date_of_birth }}</td>
+            <td>{{ voter.party_affiliation }}</td>
+            <td>{{ voter.voter_score }}</td>
+            <td><a href="{% url 'voter' voter.pk %}" class="details-link">View Details</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="pagination">
+    {% if is_paginated %}
+        {% if page_obj.has_previous %}
+            <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+        <span class="current-page">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+            <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}
