@@ -27,6 +27,9 @@ urlpatterns = [
     path("main/", include("restaurant.urls")),
     path("mini_fb/", include("mini_fb.urls")),
     path("voter_analytics/", include("voter_analytics.urls")),
+    path("final_project/", include("final_project.urls")),
+
+
     
 ] + static(settings.STATIC_URL,
            document_root = settings.STATIC_ROOT)

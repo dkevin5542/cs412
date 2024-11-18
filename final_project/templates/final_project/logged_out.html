@@ -1,0 +1,41 @@
+{% extends 'final_project/base.html' %}
+
+{% block content %}
+
+<style>
+    .center-container {
+        text-align: center;
+        padding: 40px; 
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: 50px auto; 
+    }
+
+    .login-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #1877f2;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        margin-top: 20px; 
+    }
+
+    .login-btn:hover {
+        background-color: #155bb5;
+    }
+
+    main p {
+        text-align: center;
+    }
+</style>
+
+<h2>You have been logged out successfully.</h2>
+<p >If you would like to log in again, click the link below:</p>
+<a href="{% url 'login' %}" class="login-btn">Log in again</a>
+
+{% endblock %}
