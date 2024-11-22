@@ -1,6 +1,8 @@
 from django.db import models
 import pandas as pd
 from django.db.utils import IntegrityError
+from django.contrib.auth.models import User as AuthUser
+
 
 
 # Create your models here.
@@ -8,11 +10,21 @@ class User(models.Model):
     username = models.CharField(max_length=150, unique=True)  # Unique username for the user
     email = models.EmailField(unique=True)  # Unique email for contact
     image_file = models.ImageField(blank=True)
-    date_joined = models.DateTimeField(auto_now_add=True)  # Automatically sets when the user is created
+    date_joined = models.DateTimeField(auto_now_add=True) 
+
+    auth_user = models.ForeignKey(
+        AuthUser,
+        on_delete=models.CASCADE,  # Delete the custom User instances if the auth User is deleted
+        related_name='custom_users',  # Reverse lookup from AuthUser to custom Users
+        help_text="The associated Django auth user.",
+        default=1 
+    )
+
+
     favorite_anime = models.ManyToManyField(
         'Anime',  # Reference the Anime model
         related_name='favorited_by',  # Reverse lookup for Anime -> Users who favorited it
-        blank=True,  # Optional field
+        blank=True, 
         help_text="Select your favorite anime."
     )
 
@@ -26,6 +38,14 @@ class User(models.Model):
 
     def __str__(self):
         return self.username
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['auth_user'],  # Ensure each AuthUser can have only one associated User
+                name='unique_auth_user_constraint'
+            )
+        ]
     
 
 
@@ -92,7 +112,7 @@ class Character(models.Model):
     # Fields
     name = models.CharField(max_length=255)  # Character's name
     anime = models.ForeignKey(
-        'Anime',  # Assuming Anime is the name of the anime model
+        'Anime', 
         on_delete=models.CASCADE,  # Deletes character when anime is deleted
         related_name='characters'  # Related name for reverse lookup
     )
@@ -102,12 +122,12 @@ class Character(models.Model):
         ('supporting', 'Supporting'),
         ('antagonist', 'Antagonist'),
     ], default='supporting')
-    image_url = models.URLField(blank=True, null=True)  # Optional image URL
+    image_url = models.URLField(blank=True, null=True)  
     popularity = models.IntegerField(blank=True, null=True)  # Popularity ranking or score
 
     # Timestamps
-    created_at = models.DateTimeField(auto_now_add=True)  # Automatically sets when created
-    updated_at = models.DateTimeField(auto_now=True)  # Automatically updates on save
+    created_at = models.DateTimeField(auto_now_add=True)  
+    updated_at = models.DateTimeField(auto_now=True) 
 
     def __str__(self):
         return f"{self.name} ({self.get_role_display()}) in {self.anime.title}"
@@ -122,7 +142,7 @@ class Merchandise(models.Model):
         ('accessory', 'Accessory'),
         ('other', 'Other'),
     ], default='other')
-    description = models.TextField(blank=True, null=True)  # Optional description of the item
+    description = models.TextField(blank=True, null=True)  
     price = models.DecimalField(max_digits=10, decimal_places=2)  # Price of the merchandise
     user = models.ForeignKey(
         'User',  # Link to the User model
@@ -136,8 +156,8 @@ class Merchandise(models.Model):
     )
 
     # Timestamps
-    created_at = models.DateTimeField(auto_now_add=True)  # Automatically set when created
-    updated_at = models.DateTimeField(auto_now=True)  # Automatically update on save
+    created_at = models.DateTimeField(auto_now_add=True) 
+    updated_at = models.DateTimeField(auto_now=True)  
 
     def __str__(self):
         return f"{self.item_name} ({self.type})"
