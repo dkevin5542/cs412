@@ -6,6 +6,8 @@ from .models import *
 admin.site.register(User)
 admin.site.register(Anime)
 admin.site.register(Character)
+admin.site.register(Merchandise)
+
 
 
 

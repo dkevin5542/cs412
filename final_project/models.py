@@ -16,6 +16,13 @@ class User(models.Model):
         help_text="Select your favorite anime."
     )
 
+    # Many-to-Many relationship to Merchandise
+    selected_merchandise = models.ManyToManyField(
+        'Merchandise',  # Related to Merchandise model
+        blank=True,  # Users may not have picked merchandise yet
+        related_name='buyers'  # Reverse lookup from Merchandise to users who picked it
+    )
+
 
     def __str__(self):
         return self.username
@@ -104,3 +111,33 @@ class Character(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.get_role_display()}) in {self.anime.title}"
+    
+class Merchandise(models.Model):
+    # Fields
+    item_name = models.CharField(max_length=255)  # Name of the merchandise item
+    type = models.CharField(max_length=50, choices=[  # Type of merchandise
+        ('figurine', 'Figurine'),
+        ('poster', 'Poster'),
+        ('apparel', 'Apparel'),
+        ('accessory', 'Accessory'),
+        ('other', 'Other'),
+    ], default='other')
+    description = models.TextField(blank=True, null=True)  # Optional description of the item
+    price = models.DecimalField(max_digits=10, decimal_places=2)  # Price of the merchandise
+    user = models.ForeignKey(
+        'User',  # Link to the User model
+        on_delete=models.CASCADE,  # Deletes merchandise when the user is deleted
+        related_name='merchandise'  # Related name for reverse lookup
+    )
+    character = models.ForeignKey(
+        'Character',  # Link merchandise to a specific Character
+        on_delete=models.CASCADE,  # Deletes merchandise when the character is deleted
+        related_name='merchandise'  # Related name for reverse lookup
+    )
+
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)  # Automatically set when created
+    updated_at = models.DateTimeField(auto_now=True)  # Automatically update on save
+
+    def __str__(self):
+        return f"{self.item_name} ({self.type})"
