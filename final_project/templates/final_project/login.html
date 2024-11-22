@@ -87,7 +87,7 @@
 </style>
 
 <div class="login-container">
-    <form method="POST" action="{% url 'login' %}" class="login-form">
+    <form method="POST" action="{% url 'login1' %}" class="login-form">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="hidden" name="next" value="{% url 'home' %}">

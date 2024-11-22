@@ -67,7 +67,7 @@
 </style>
 
 <div class="form-container">
-    <form action="{% url 'register' %}" method="post">
+    <form action="{% url 'register1' %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Register">

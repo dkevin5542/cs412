@@ -306,7 +306,7 @@ class RegistrationView(CreateView):
 
 
             # redirect the user to some page view...
-            return redirect(reverse('login'))
+            return redirect(reverse('create_profile'))
 
         # let the superclass CreateView handle the HTTP GET request:
         return super().dispatch(*args, **kwargs)
