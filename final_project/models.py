@@ -1,4 +1,7 @@
 from django.db import models
+import pandas as pd
+from django.db.utils import IntegrityError
+
 
 # Create your models here.
 class User(models.Model):
@@ -6,7 +9,98 @@ class User(models.Model):
     email = models.EmailField(unique=True)  # Unique email for contact
     image_file = models.ImageField(blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)  # Automatically sets when the user is created
+    favorite_anime = models.ManyToManyField(
+        'Anime',  # Reference the Anime model
+        related_name='favorited_by',  # Reverse lookup for Anime -> Users who favorited it
+        blank=True,  # Optional field
+        help_text="Select your favorite anime."
+    )
 
 
     def __str__(self):
         return self.username
+    
+
+
+
+class Anime(models.Model):
+    uid = models.IntegerField(unique=True, primary_key=True)
+    title = models.CharField(max_length=255)
+    synopsis = models.TextField()
+    genre = models.JSONField()  # To store genres as a JSON array
+    aired = models.CharField(max_length=255)  # Use CharField for date ranges
+    episodes = models.FloatField(null=True, blank=True)  # Float for episodes (e.g., 1.0)
+    members = models.IntegerField()
+    popularity = models.IntegerField()
+    ranked = models.FloatField(null=True, blank=True)  # Some rankings may be null
+    score = models.FloatField(null=True, blank=True)
+    img_url = models.URLField(max_length=500)
+    link = models.URLField(max_length=500)
+
+    def __str__(self):
+        return self.title
+    
+def load_data(file_path):
+    """
+    Loads anime data from a CSV file into the Anime model.
+
+    Args:
+        file_path (str): The file path to the CSV file.
+    """
+    try:
+        # Read the CSV file
+        anime_data = pd.read_csv(file_path)
+        
+        # Convert 'genre' column from string to list
+        anime_data['genre'] = anime_data['genre'].apply(eval)
+
+        # Iterate through the rows and create Anime objects
+        for _, row in anime_data.iterrows():
+            try:
+                Anime.objects.create(
+                    uid=row['uid'],
+                    title=row['title'],
+                    synopsis=row['synopsis'],
+                    genre=row['genre'],
+                    aired=row['aired'],
+                    episodes=row['episodes'] if not pd.isna(row['episodes']) else None,
+                    members=row['members'],
+                    popularity=row['popularity'],
+                    ranked=row['ranked'] if not pd.isna(row['ranked']) else None,
+                    score=row['score'] if not pd.isna(row['score']) else None,
+                    img_url=row['img_url'],
+                    link=row['link']
+                )
+            except IntegrityError:
+                print(f"Anime with UID {row['uid']} already exists. Skipping.")
+            except Exception as e:
+                print(f"Error adding anime {row['title']}: {e}")
+        print("Data successfully loaded.")
+    except FileNotFoundError:
+        print("File not found. Please provide a valid file path.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+class Character(models.Model):
+    # Fields
+    name = models.CharField(max_length=255)  # Character's name
+    anime = models.ForeignKey(
+        'Anime',  # Assuming Anime is the name of the anime model
+        on_delete=models.CASCADE,  # Deletes character when anime is deleted
+        related_name='characters'  # Related name for reverse lookup
+    )
+    description = models.TextField(blank=True, null=True)  # Description of the character
+    role = models.CharField(max_length=50, choices=[  # Character's role
+        ('main', 'Main'),
+        ('supporting', 'Supporting'),
+        ('antagonist', 'Antagonist'),
+    ], default='supporting')
+    image_url = models.URLField(blank=True, null=True)  # Optional image URL
+    popularity = models.IntegerField(blank=True, null=True)  # Popularity ranking or score
+
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)  # Automatically sets when created
+    updated_at = models.DateTimeField(auto_now=True)  # Automatically updates on save
+
+    def __str__(self):
+        return f"{self.name} ({self.get_role_display()}) in {self.anime.title}"
