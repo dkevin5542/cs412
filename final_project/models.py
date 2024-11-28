@@ -17,7 +17,6 @@ class User(models.Model):
         on_delete=models.CASCADE,  # Delete the custom User instances if the auth User is deleted
         related_name='custom_users',  # Reverse lookup from AuthUser to custom Users
         help_text="The associated Django auth user.",
-        default=1 
     )
 
 

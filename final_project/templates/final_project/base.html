@@ -123,18 +123,13 @@
         
             {% if user.is_authenticated %}
             <!-- <a href="{% url 'create_profile' %}">Create New Profile</a> -->
-                {% if is_own_profile %}
-                    <!-- <a href="{% url 'news_feed' %}">News Feed</a>
-                    <a href="{% url 'friend_suggestions' %}">Friend Suggestions</a> -->
-                {% endif %}
-              
-                <form action="{% url 'logout' %}" method="post" class="logout-form">
+                <form action="{% url 'logout1' %}" method="post" class="logout-form">
                     {% csrf_token %}
                     <button type="submit" class="logout-btn">Logout</button>
                 </form>
                 <div class="auth-info">Welcome, {{ user.username }}</div>
             {% else %}
-                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'login1' %}">Login</a>
             {% endif %}
         </nav>
     </header>

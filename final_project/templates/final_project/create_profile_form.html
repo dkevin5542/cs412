@@ -1,0 +1,98 @@
+{% extends "final_project/base.html" %}
+
+{% block title %}
+Create Profile - Anime Tracker
+{% endblock %}
+
+{% block content %}
+<style>
+    .form-container {
+        background-color: #ffffff; /* White background for a clean look */
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        max-width: 650px;
+        margin: 20px auto;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .form-container h2 {
+        text-align: center;
+        color: #00bfa5; /* Teal color for a modern look */
+        font-size: 30px;
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
+
+    .form-container p {
+        text-align: center;
+        font-size: 16px;
+        color: #555555; /* Neutral dark grey for text */
+        margin-bottom: 20px;
+    }
+
+    .form-container form {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .form-container label {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333333;
+    }
+
+    .form-container input[type="text"],
+    .form-container input[type="email"],
+    .form-container input[type="file"] {
+        padding: 12px;
+        border: 1px solid #cccccc;
+        border-radius: 6px;
+        font-size: 15px;
+        width: 100%;
+        box-sizing: border-box;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-container input[type="text"]:focus,
+    .form-container input[type="email"]:focus,
+    .form-container input[type="file"]:focus {
+        border-color: #00bfa5;
+        outline: none;
+        box-shadow: 0 0 8px rgba(0, 191, 165, 0.3);
+    }
+
+    .form-container button {
+        background-color: #ff6f61; /* Coral color for a striking button */
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-container button:hover {
+        background-color: #ff8a80; /* Slightly lighter coral for hover effect */
+        box-shadow: 0 4px 10px rgba(255, 111, 97, 0.4);
+    }
+
+    .form-container button:focus {
+        outline: none;
+        box-shadow: 0 0 10px rgba(255, 111, 97, 0.6);
+    }
+</style>
+
+<div class="form-container">
+    <h2>Create Your Profile</h2>
+    <p>Set up your profile to start tracking your anime journey!</p>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create Profile</button>
+    </form>
+</div>
+{% endblock %}
