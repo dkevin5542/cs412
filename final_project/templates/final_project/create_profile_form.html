@@ -7,88 +7,92 @@ Create Profile - Anime Tracker
 {% block content %}
 <style>
     .form-container {
-        background-color: #ffffff; /* White background for a clean look */
-        padding: 25px;
-        border-radius: 12px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        max-width: 650px;
-        margin: 20px auto;
-        font-family: 'Arial', sans-serif;
+        background-color: #f9f3fc; /* Light lavender for a soft anime vibe */
+        padding: 50px;
+        border-radius: 15px;
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+        max-width: 750px;
+        margin: 60px auto;
+        font-family: 'Poppins', Arial, sans-serif;
+        text-align: center;
     }
 
     .form-container h2 {
-        text-align: center;
-        color: #00bfa5; /* Teal color for a modern look */
-        font-size: 30px;
-        margin-bottom: 15px;
+        font-size: 36px;
+        color: #6a1b9a; /* Deep purple to match the theme */
+        margin-bottom: 25px;
         font-weight: bold;
+        text-shadow: 1px 1px 3px rgba(106, 27, 154, 0.4);
     }
 
     .form-container p {
-        text-align: center;
-        font-size: 16px;
-        color: #555555; /* Neutral dark grey for text */
-        margin-bottom: 20px;
+        font-size: 18px;
+        color: #4a4a4a; /* Neutral grey for contrast */
+        margin-bottom: 30px;
     }
 
     .form-container form {
         display: flex;
         flex-direction: column;
-        gap: 18px;
+        gap: 25px;
+        align-items: center;
     }
 
     .form-container label {
         font-size: 16px;
-        font-weight: 600;
+        font-weight: bold;
         color: #333333;
+        margin-bottom: 5px;
+        text-align: left;
+        width: 100%;
     }
 
     .form-container input[type="text"],
     .form-container input[type="email"],
     .form-container input[type="file"] {
-        padding: 12px;
-        border: 1px solid #cccccc;
-        border-radius: 6px;
-        font-size: 15px;
-        width: 100%;
-        box-sizing: border-box;
-        transition: border-color 0.3s, box-shadow 0.3s;
+        width: 80%;
+        padding: 15px;
+        font-size: 16px;
+        border: 2px solid #d8b6ff;
+        border-radius: 8px;
+        background: #fff;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .form-container input[type="text"]:focus,
     .form-container input[type="email"]:focus,
     .form-container input[type="file"]:focus {
-        border-color: #00bfa5;
+        border-color: #6a1b9a;
         outline: none;
-        box-shadow: 0 0 8px rgba(0, 191, 165, 0.3);
+        box-shadow: 0 0 10px rgba(106, 27, 154, 0.4);
     }
 
     .form-container button {
-        background-color: #ff6f61; /* Coral color for a striking button */
+        background-color: #6a1b9a; /* Purple for the button */
         color: white;
         border: none;
-        padding: 12px;
+        padding: 15px 30px;
         border-radius: 8px;
-        font-size: 16px;
+        font-size: 18px;
         font-weight: bold;
         cursor: pointer;
         transition: background-color 0.3s, box-shadow 0.3s;
     }
 
     .form-container button:hover {
-        background-color: #ff8a80; /* Slightly lighter coral for hover effect */
-        box-shadow: 0 4px 10px rgba(255, 111, 97, 0.4);
+        background-color: #8e24aa; /* Slightly brighter for hover */
+        box-shadow: 0px 6px 15px rgba(138, 43, 226, 0.5);
     }
 
     .form-container button:focus {
         outline: none;
-        box-shadow: 0 0 10px rgba(255, 111, 97, 0.6);
+        box-shadow: 0 0 12px rgba(138, 43, 226, 0.6);
     }
 </style>
 
 <div class="form-container">
     <h2>Create Your Profile</h2>
-    <p>Set up your profile to start tracking your anime journey!</p>
+    <p>Set up your profile and dive into your anime adventure!</p>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
@@ -96,3 +100,5 @@ Create Profile - Anime Tracker
     </form>
 </div>
 {% endblock %}
+
+

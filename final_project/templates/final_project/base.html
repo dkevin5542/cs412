@@ -5,36 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Anime Tracker{% endblock %}</title>
     <style>
+        /* General Styling */
         body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Poppins', Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
+            background: linear-gradient(to bottom, #fdfcfb, #e2e2e2);
+            color: #2d2d2d;
         }
 
+        /* Header Section */
         header {
-            background-color: #4267B2;
+            background: linear-gradient(145deg, #e63946, #457b9d);
             color: white;
             padding: 15px 0;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            position: relative;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
 
         header h1 {
             margin: 0;
-            font-size: 28px;
-            font-weight: 600;
+            font-size: 32px;
+            font-weight: 700;
+            text-shadow: 2px 2px #f1faee;
         }
 
         nav {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
+            gap: 25px;
             padding: 10px 0;
-            background-color: #4267B2;
         }
 
         nav a,
@@ -44,17 +45,17 @@
             font-size: 16px;
             font-weight: 500;
             padding: 10px 20px;
-            border-radius: 5px;
-            transition: color 0.3s ease, background-color 0.3s ease;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         nav a:hover,
         .logout-btn:hover {
-            background-color: #1abc9c;
-            color: white;
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
         }
 
-        /* Logout button styling to match other navigation links */
         .logout-form {
             display: inline;
         }
@@ -63,66 +64,89 @@
             background: none;
             border: none;
             cursor: pointer;
-            font-size: 16px;
         }
 
-        /* Welcome text styling */
         .auth-info {
             display: flex;
             align-items: center;
             gap: 10px;
             font-size: 14px;
-            color: #e0e0e0;
+            color: #f1faee;
         }
 
-        /* Main content styling */
+        /* Main Content Section */
         main {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 25px;
-            background-color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            line-height: 1.6;
+            max-width: 1200px; /* Increased width */
+            margin: 50px auto; /* Increased margin for spacing */
+            padding: 50px; /* Added padding for more spacious content */
+            background: white;
+            border-radius: 25px; /* Larger rounding for a more modern look */
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            line-height: 2; /* Improved line spacing for readability */
+            font-size: 18px; /* Slightly larger font size for better readability */
         }
 
         main h2 {
-            font-size: 24px;
-            color: #333;
-            margin-bottom: 10px;
-            text-align: center;
+            font-size: 36px; /* Larger title font size */
+            color: #457b9d;
+            margin-bottom: 30px;
         }
 
         main p {
-            font-size: 16px;
+            font-size: 18px; /* Larger paragraph font size */
             color: #555;
-            /* text-align: justify; */
         }
 
-        /* Footer styling */
+        /* Footer Section */
         footer {
             text-align: center;
-            padding: 15px;
-            background-color: #4267B2;
+            padding: 20px;
+            background: linear-gradient(145deg, #457b9d, #e63946);
             color: white;
-            font-size: 14px;
+            font-size: 16px;
+            margin-top: 50px;
+            box-shadow: 0px -6px 12px rgba(0, 0, 0, 0.2);
         }
 
         footer p {
             margin: 0;
         }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            header h1 {
+                font-size: 28px;
+            }
+
+            main {
+                max-width: 95%; /* Allow more flexibility for small screens */
+                padding: 30px; /* Reduce padding for smaller devices */
+            }
+
+            main h2 {
+                font-size: 28px;
+            }
+
+            main p {
+                font-size: 16px;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
-        <h1>Animer Tracker</h1>
+        <h1>Anime Tracker</h1>
         <nav>
             <a href="{% url 'home' %}">Home</a>
-            <!-- <a href="{% url 'show_all_profile' %}">Show All Profiles</a> -->
-            <!-- <a href="{% url 'create_profile' %}">Create New Profile</a> -->
-        
             {% if user.is_authenticated %}
-            <!-- <a href="{% url 'create_profile' %}">Create New Profile</a> -->
+                <a href="{% url 'anime_list' %}">Anime List</a>
+
                 <form action="{% url 'logout1' %}" method="post" class="logout-form">
                     {% csrf_token %}
                     <button type="submit" class="logout-btn">Logout</button>
@@ -137,8 +161,7 @@
     <main>
         {% block content %}
         <h2>About This Site</h2>
-        <p>This application that enables users to organize and track their personal collections of anime, characters, and related merchandise. Users will have an account and can add anime titles, associate characters with each anime, and manage anime merchandise they own.</p>
-        <!-- <p>Click "Show All Profiles" in the navigation bar to see a list of all registered profiles on the platform.</p> -->
+        <p>This application enables users to organize and track their personal collections of anime, characters, and related merchandise. Users will have an account and can add anime titles, associate characters with each anime, and manage anime merchandise they own.</p>
         {% endblock %}
     </main>
 
@@ -147,4 +170,5 @@
     </footer>
 </body>
 </html>
+
 

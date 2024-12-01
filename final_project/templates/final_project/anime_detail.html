@@ -1,0 +1,133 @@
+{% extends "final_project/base.html" %}
+
+{% block content %}
+<div class="anime-detail-container">
+    <a href="{% url 'anime_list' %}" class="back-button">← Back to List</a>
+    <h1>{{ anime.title }}</h1>
+    <img src="{{ anime.img_url }}" alt="{{ anime.title }}" class="anime-image">
+    <div class="anime-details">
+        <p><strong>Synopsis:</strong> {{ anime.synopsis }}</p>
+        <p><strong>Genre:</strong> {{ anime.genre|join:", " }}</p>
+        <p><strong>Score:</strong> {{ anime.score|default:"N/A" }}</p>
+        <p><strong>Ranked:</strong> {{ anime.ranked|default:"N/A" }}</p>
+        <p><strong>Popularity:</strong> {{ anime.popularity }}</p>
+        <p><strong>Episodes:</strong> {{ anime.episodes|default:"Unknown" }}</p>
+        <p><strong>Aired:</strong> {{ anime.aired }}</p>
+    </div>
+    <a href="{{ anime.link }}" target="_blank" class="external-link">View on External Site</a>
+</div>
+
+<style>
+    /* General Container */
+    .anime-detail-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 30px;
+        background: linear-gradient(145deg, #f7f7fa, #ebebf1);
+        border-radius: 20px;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.8;
+        color: #2d2d2d;
+        text-align: center;
+        position: relative;
+    }
+
+    /* Header Styling */
+    .anime-detail-container h1 {
+        font-size: 36px;
+        color: #e63946;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px #f1faee;
+    }
+
+    /* Image Styling */
+    .anime-detail-container img {
+        display: block;
+        max-width: 100%;
+        margin: 20px auto;
+        border-radius: 12px;
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Detail Box Styling */
+    .anime-details {
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        text-align: left;
+    }
+
+    .anime-details p {
+        font-size: 16px;
+        margin: 12px 0;
+    }
+
+    .anime-details p strong {
+        color: #4267B2;
+    }
+
+    /* Back Button Styling */
+    .back-button {
+        display: inline-block;
+        margin-bottom: 20px;
+        padding: 10px 15px;
+        background-color: #457b9d;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+        background-color: #365899;
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    /* External Link Button */
+    .external-link {
+        display: block;
+        margin: 20px auto 0;
+        padding: 12px 20px;
+        background: linear-gradient(145deg, #4267B2, #1d3557);
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        max-width: 250px;
+    }
+
+    .external-link:hover {
+        background-color: #365899;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .anime-detail-container {
+            padding: 20px;
+        }
+
+        .anime-detail-container h1 {
+            font-size: 28px;
+        }
+
+        .anime-details p {
+            font-size: 14px;
+        }
+
+        .external-link, .back-button {
+            font-size: 14px;
+            padding: 8px 12px;
+        }
+    }
+</style>
+{% endblock %}
+

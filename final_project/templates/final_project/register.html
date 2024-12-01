@@ -1,33 +1,33 @@
 {% extends 'final_project/base.html' %}
 {% block content %}
-<h1 align="center">Register for an Account</h1>
 
 <style>
-    /* Center the form container */
     .form-container {
-        max-width: 500px;
+        max-width: 600px;
         margin: 50px auto;
         padding: 40px;
-        background-color: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
+        background-color: #f9f3fc; /* Light lavender background */
+        border: 2px solid #d8b6ff; /* Soft lavender border */
+        border-radius: 15px;
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
         font-family: 'Arial', sans-serif;
-    }
-
-    /* Style the form heading */
-    .form-container h1 {
         text-align: center;
-        color: #4267B2;
-        font-size: 28px;
-        margin-bottom: 20px;
     }
 
-    /* Style the form fields */
+    .form-container h1 {
+        color: #6a1b9a; /* Rich purple for the header text */
+        font-size: 30px;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+
     .form-container label {
         display: block;
+        font-size: 16px;
         font-weight: bold;
-        color: #333;
-        margin-bottom: 5px;
+        color: #4a4a4a;
+        margin-bottom: 8px;
+        text-align: left;
     }
 
     .form-container input[type="text"],
@@ -37,41 +37,57 @@
         margin-bottom: 15px;
         border: 1px solid #dcdfe6;
         border-radius: 8px;
-        background-color: #f5f6f7;
         font-size: 16px;
-        transition: border-color 0.3s ease;
+        background-color: #f5f6f7;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .form-container input[type="text"]:focus,
     .form-container input[type="password"]:focus {
-        border-color: #4267B2;
+        border-color: #6a1b9a; /* Purple focus color */
         outline: none;
+        box-shadow: 0 0 8px rgba(106, 27, 154, 0.4);
     }
 
-    /* Style the submit button */
     .form-container input[type="submit"] {
         width: 100%;
         padding: 12px;
-        background-color: #4267B2;
-        border: none;
-        border-radius: 8px;
         font-size: 18px;
+        background-color: #6a1b9a; /* Anime-inspired purple */
         color: white;
+        border: none;
+        border-radius: 10px;
+        font-weight: bold;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .form-container input[type="submit"]:hover {
-        background-color: #365899;
+        background-color: #8e24aa; /* Slightly lighter purple for hover */
+        box-shadow: 0px 4px 10px rgba(138, 43, 226, 0.4);
+    }
+
+    .form-container input[type="submit"]:focus {
+        outline: none;
+        box-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
+    }
+
+    .form-container p {
+        font-size: 16px;
+        color: #4a4a4a;
+        margin-top: 15px;
     }
 </style>
 
 <div class="form-container">
+    <h1>Register for an Account</h1>
     <form action="{% url 'register1' %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Register">
     </form>
+    <p>Already have an account? <a href="{% url 'login1' %}" style="color: #6a1b9a; font-weight: bold;">Login here</a>.</p>
 </div>
+
 {% endblock %}
 

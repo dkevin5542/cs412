@@ -1,105 +1,87 @@
 {% extends 'final_project/base.html' %}
-
 {% block content %}
-<h1 align="center">Login</h1>
 
 <style>
-    /* Center the login container */
     .login-container {
-        max-width: 400px;
+        max-width: 600px;
         margin: 50px auto;
         padding: 40px;
-        background-color: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
+        background-color: #f9f3fc; /* Light lavender background */
+        border: 2px solid #d8b6ff; /* Soft lavender border */
+        border-radius: 15px;
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
         font-family: 'Arial', sans-serif;
-    }
-
-    /* Style the heading */
-    .login-container h1 {
         text-align: center;
-        color: #4267B2;
-        font-size: 28px;
+    }
+
+    .login-container h1 {
+        color: #6a1b9a; /* Rich purple for the header text */
+        font-size: 30px;
         margin-bottom: 20px;
-    }
-
-    /* Style form labels */
-    .login-form label {
-        display: block;
         font-weight: bold;
-        color: #333;
-        margin-bottom: 5px;
-        text-align: left;
     }
 
-    /* Style input fields */
-    .login-form input[type="text"],
-    .login-form input[type="password"] {
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
         width: 100%;
         padding: 12px;
         margin-bottom: 15px;
         border: 1px solid #dcdfe6;
         border-radius: 8px;
-        background-color: #f5f6f7;
         font-size: 16px;
-        transition: border-color 0.3s ease;
+        background-color: #f5f6f7;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .login-form input[type="text"]:focus,
-    .login-form input[type="password"]:focus {
-        border-color: #4267B2;
+    .login-container input[type="text"]:focus,
+    .login-container input[type="password"]:focus {
+        border-color: #6a1b9a;
         outline: none;
+        box-shadow: 0 0 8px rgba(106, 27, 154, 0.4);
     }
 
-    .login-button {
+    .login-container input[type="submit"] {
         width: 100%;
         padding: 12px;
-        background-color: #4267B2;
-        border: none;
-        border-radius: 8px;
         font-size: 18px;
+        background-color: #6a1b9a;
         color: white;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .login-button:hover {
-        background-color: #365899;
-    }
-
-    .register-section {
-        text-align: center;
-        margin-top: 20px;
-        font-size: 16px;
-        color: #555;
-    }
-
-    .register-section a {
-        color: #4267B2;
-        text-decoration: none;
+        border: none;
+        border-radius: 10px;
         font-weight: bold;
-        transition: color 0.3s ease;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .register-section a:hover {
-        color: #365899;
+    .login-container input[type="submit"]:hover {
+        background-color: #8e24aa;
+        box-shadow: 0px 4px 10px rgba(138, 43, 226, 0.4);
+    }
+
+    .login-container p {
+        font-size: 16px;
+        color: #4a4a4a;
+        margin-top: 15px;
+    }
+
+    .login-container p a {
+        color: #6a1b9a;
+        font-weight: bold;
     }
 </style>
 
 <div class="login-container">
-    <form method="POST" action="{% url 'login1' %}" class="login-form">
+    <h1>Login</h1>
+    <form method="POST" action="{% url 'login1' %}">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="hidden" name="next" value="{% url 'home' %}">
-        <input type="submit" value="Login" class="login-button">
+        <input type="submit" value="Login">
     </form>
-
-    <div class="register-section">
-        <hr>
-        Don't have an account yet?<br>
-        <a href="{% url 'register1' %}">Register here</a>.
-    </div>
+    <p>Don't have an account yet? <a href="{% url 'register1' %}">Register here</a>.</p>
 </div>
 
 {% endblock %}
+
+
 

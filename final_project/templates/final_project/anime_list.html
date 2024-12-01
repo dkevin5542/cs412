@@ -1,0 +1,203 @@
+{% extends "final_project/base.html" %}
+
+{% block content %}
+<h1 align="center" class="anime-header">Anime List</h1>
+
+<!-- Search Bar -->
+<div class="search-container">
+    <form method="GET" action="{% url 'anime_list' %}">
+        <input 
+            type="text" 
+            name="search" 
+            placeholder="Search for an anime..." 
+            value="{{ request.GET.search|default:'' }}" 
+            class="search-input"
+        >
+        <button type="submit" class="search-button">Search</button>
+    </form>
+</div>
+
+<div class="anime-container">
+    {% for anime in anime_list %}
+        <div class="anime-card">
+            <h2 class="anime-title">{{ anime.title }}</h2>
+            <img src="{{ anime.img_url }}" alt="{{ anime.title }}" class="anime-image">
+            <p><strong>Score:</strong> {{ anime.score|default:"N/A" }}</p>
+            <p><strong>Episodes:</strong> {{ anime.episodes|default:"Unknown" }}</p>
+            <p><strong>Rank:</strong> {{ anime.ranked|default:"N/A" }}</p>
+            <p><strong>Popularity:</strong> {{ anime.popularity }}</p>
+            <p><strong>Genre:</strong> {{ anime.genre|join:", " }}</p>
+            <a href="{% url 'anime_detail' anime.pk %}" class="anime-button">View Details</a>
+        </div>
+    {% empty %}
+        <p class="no-results">No anime found.</p>
+    {% endfor %}
+</div>
+
+<div class="pagination">
+    {% if is_paginated %}
+        <div class="page-controls">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="prev">Previous</a>
+            {% endif %}
+
+            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="next">Next</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    /* Anime List Header */
+    .anime-header {
+        font-family: 'Roboto', sans-serif;
+        color: #e63946;
+        text-shadow: 2px 2px #1d3557;
+        margin-bottom: 20px;
+        font-size: 36px;
+    }
+
+    /* Search Bar Styling */
+    .search-container {
+        max-width: 600px;
+        margin: 20px auto;
+        text-align: center;
+        position: relative;
+    }
+
+    .search-input {
+        width: 80%;
+        padding: 10px;
+        font-size: 16px;
+        border: 2px solid #457b9d;
+        border-radius: 8px;
+        background: #f1faee;
+        color: #1d3557;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .search-input:focus {
+        border-color: #e63946;
+        box-shadow: 0px 0px 8px rgba(230, 57, 70, 0.8);
+    }
+
+    .search-button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #e63946;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-left: 10px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .search-button:hover {
+        background-color: #d62828;
+    }
+
+    /* Anime Card Container */
+    .anime-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        margin: 30px auto;
+    }
+
+    .anime-card {
+        width: 280px;
+        padding: 20px;
+        background: linear-gradient(135deg, #457b9d 20%, #1d3557 90%);
+        border-radius: 12px;
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        color: #f1faee;
+    }
+
+    .anime-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #e63946;
+        margin-bottom: 10px;
+    }
+
+    .anime-image {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .anime-card p {
+        margin: 5px 0;
+        font-size: 14px;
+        color: #f1faee;
+    }
+
+    .anime-button {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 15px;
+        color: white;
+        background-color: #e63946;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .anime-button:hover {
+        background-color: #d62828;
+    }
+
+    /* No Results Styling */
+    .no-results {
+        text-align: center;
+        font-size: 18px;
+        color: #e63946;
+        margin-top: 20px;
+    }
+
+    /* Pagination Styling */
+    .pagination {
+        margin: 30px auto;
+        text-align: center;
+    }
+
+    .page-controls {
+        display: inline-block;
+        text-align: center;
+    }
+
+    .page-controls a {
+        padding: 10px 15px;
+        text-decoration: none;
+        color: #e63946;
+        font-weight: bold;
+        margin: 0 5px;
+        border: 1px solid #e63946;
+        border-radius: 5px;
+        background: #f1faee;
+        transition: all 0.3s ease;
+    }
+
+    .page-controls span {
+        margin: 0 10px;
+        font-size: 16px;
+        color: #457b9d;
+    }
+
+    .page-controls a:hover {
+        color: white;
+        background: #e63946;
+    }
+</style>
+{% endblock %}

@@ -66,46 +66,46 @@ class Anime(models.Model):
     def __str__(self):
         return self.title
     
-def load_data(file_path):
-    """
-    Loads anime data from a CSV file into the Anime model.
+    def load_data(file_path):
+        """
+        Loads anime data from a CSV file into the Anime model.
 
-    Args:
-        file_path (str): The file path to the CSV file.
-    """
-    try:
-        # Read the CSV file
-        anime_data = pd.read_csv(file_path)
-        
-        # Convert 'genre' column from string to list
-        anime_data['genre'] = anime_data['genre'].apply(eval)
+        Args:
+            file_path (str): The file path to the CSV file.
+        """
+        try:
+            # Read the CSV file
+            anime_data = pd.read_csv(file_path)
+            
+            # Convert 'genre' column from string to list
+            anime_data['genre'] = anime_data['genre'].apply(eval)
 
-        # Iterate through the rows and create Anime objects
-        for _, row in anime_data.iterrows():
-            try:
-                Anime.objects.create(
-                    uid=row['uid'],
-                    title=row['title'],
-                    synopsis=row['synopsis'],
-                    genre=row['genre'],
-                    aired=row['aired'],
-                    episodes=row['episodes'] if not pd.isna(row['episodes']) else None,
-                    members=row['members'],
-                    popularity=row['popularity'],
-                    ranked=row['ranked'] if not pd.isna(row['ranked']) else None,
-                    score=row['score'] if not pd.isna(row['score']) else None,
-                    img_url=row['img_url'],
-                    link=row['link']
-                )
-            except IntegrityError:
-                print(f"Anime with UID {row['uid']} already exists. Skipping.")
-            except Exception as e:
-                print(f"Error adding anime {row['title']}: {e}")
-        print("Data successfully loaded.")
-    except FileNotFoundError:
-        print("File not found. Please provide a valid file path.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+            # Iterate through the rows and create Anime objects
+            for _, row in anime_data.iterrows():
+                try:
+                    Anime.objects.create(
+                        uid=row['uid'],
+                        title=row['title'],
+                        synopsis=row['synopsis'],
+                        genre=row['genre'],
+                        aired=row['aired'],
+                        episodes=row['episodes'] if not pd.isna(row['episodes']) else None,
+                        members=row['members'],
+                        popularity=row['popularity'],
+                        ranked=row['ranked'] if not pd.isna(row['ranked']) else None,
+                        score=row['score'] if not pd.isna(row['score']) else None,
+                        img_url=row['img_url'],
+                        link=row['link']
+                    )
+                except IntegrityError:
+                    print(f"Anime with UID {row['uid']} already exists. Skipping.")
+                except Exception as e:
+                    print(f"Error adding anime {row['title']}: {e}")
+            print("Data successfully loaded.")
+        except FileNotFoundError:
+            print("File not found. Please provide a valid file path.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
 class Character(models.Model):
     # Fields

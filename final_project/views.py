@@ -9,6 +9,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login
 from django.contrib.auth.mixins import AccessMixin
 from django.contrib.auth.views import LoginView
+from django.db.models import Q
+
 
 
 
@@ -135,5 +137,32 @@ class CustomLoginView(LoginView):
         if not hasattr(self.request.user, 'profile'):
             return reverse('create_profile1')
         return reverse('home')
+    
+class AnimeListView(ListView):
+    """
+    List view to display all Anime sorted by score in descending order.
+    """
+    model = Anime
+    template_name = "final_project/anime_list.html"  # Path to the template
+    context_object_name = "anime_list"  # Variable name in the template
+    ordering = ['-score']  # Sort by score in descending order
+    paginate_by = 12  # Number of anime per page (optional)
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        search_query = self.request.GET.get("search", "")
+        if search_query:
+            queryset = queryset.filter(
+                Q(title__icontains=search_query) 
+            )
+        return queryset
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["request"] = self.request  # Pass the request object to the template
+        return context
+    
+class AnimeDetailView(DetailView):
+    model = Anime
+    template_name = "final_project/anime_detail.html"
+    context_object_name = "anime"
 

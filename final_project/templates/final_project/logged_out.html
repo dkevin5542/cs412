@@ -1,41 +1,54 @@
 {% extends 'final_project/base.html' %}
-
 {% block content %}
 
 <style>
-    .center-container {
-        text-align: center;
-        padding: 40px; 
-        background-color: white;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    .logout-container {
         max-width: 500px;
-        margin: 50px auto; 
+        margin: 50px auto;
+        padding: 40px;
+        background-color: #f9f3fc; /* Light lavender background */
+        border: 2px solid #d8b6ff; /* Soft lavender border */
+        border-radius: 15px;
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+        font-family: 'Arial', sans-serif;
+        text-align: center;
     }
 
-    .login-btn {
+    .logout-container h2 {
+        color: #6a1b9a; /* Rich purple for the header text */
+        font-size: 28px;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+
+    .logout-container p {
+        font-size: 16px;
+        color: #4a4a4a;
+        margin-bottom: 20px;
+    }
+
+    .logout-container a {
         display: inline-block;
-        padding: 10px 20px;
-        background-color: #1877f2;
+        padding: 12px 20px;
+        font-size: 16px;
+        background-color: #6a1b9a;
         color: white;
         text-decoration: none;
-        border-radius: 5px;
-        font-size: 16px;
-        transition: background-color 0.3s ease;
-        margin-top: 20px; 
+        border-radius: 10px;
+        font-weight: bold;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .login-btn:hover {
-        background-color: #155bb5;
-    }
-
-    main p {
-        text-align: center;
+    .logout-container a:hover {
+        background-color: #8e24aa;
+        box-shadow: 0px 4px 10px rgba(138, 43, 226, 0.4);
     }
 </style>
 
-<h2>You have been logged out successfully.</h2>
-<p >If you would like to log in again, click the link below:</p>
-<a href="{% url 'login1' %}" class="login-btn">Log in again</a>
+<div class="logout-container">
+    <h2>Logged Out</h2>
+    <p>You have been logged out successfully.</p>
+    <a href="{% url 'login1' %}">Log in again</a>
+</div>
 
 {% endblock %}
