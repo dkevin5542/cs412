@@ -14,3 +14,28 @@ class FavoriteAnimeForm(forms.Form):
         widget=forms.Select(attrs={'class': 'form-select'}),
         label="Select Anime"
     )
+
+class AddAnimeForm(forms.Form):
+    """
+    Form for selecting multiple animes to favorite.
+    """
+    anime_ids = forms.ModelMultipleChoiceField(
+        queryset=Anime.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=True,
+        label="Select Animes"
+    )
+
+class UpdateProfileImageForm(forms.ModelForm):
+    """
+    Form to update only the profile image of the user.
+    """
+    class Meta:
+        model = Profile
+        fields = ['image_file'] 
+        widgets = {
+            'image_file': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }
+        labels = {
+            'image_file': 'Profile Image',
+        }

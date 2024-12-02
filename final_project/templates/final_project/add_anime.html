@@ -1,0 +1,57 @@
+{% extends "final_project/base.html" %}
+
+{% block title %}
+Add Favorite Anime
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Add Favorite Anime</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add to Favorites</button>
+    </form>
+</div>
+
+<style>
+    .form-container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 40px;
+        background-color: #fefefe;
+        border-radius: 15px;
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+        font-family: 'Poppins', Arial, sans-serif;
+        text-align: center;
+    }
+
+    .form-container h2 {
+        margin-bottom: 20px;
+        font-size: 28px;
+        color: #4267B2;
+    }
+
+    .form-container form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .form-container button {
+        padding: 12px;
+        background-color: #4267B2;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .form-container button:hover {
+        background-color: #365899;
+    }
+</style>
+{% endblock %}

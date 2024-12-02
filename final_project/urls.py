@@ -14,6 +14,12 @@ urlpatterns = [
     path('ranking/', views.AnimeListView.as_view(), name='anime_list'),
     path('anime/<int:pk>/', views.AnimeDetailView.as_view(), name='anime_detail'), 
     path('profile/', views.ProfileDetailView.as_view(), name='profile'),
+    path('anime/add-favorite/', views.add_favorite_anime, name='add_favorite_anime'),
+    path('profile/update-image/', views.UpdateProfileImageView.as_view(), name='update_profile_image'),
+    path('add-multiple/', views.AddAnimeView.as_view(), name='add_anime'),
+
+
+
 
 
 

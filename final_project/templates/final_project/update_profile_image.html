@@ -1,0 +1,51 @@
+{% extends "final_project/base.html" %}
+
+{% block title %}
+Update Profile Image - Anime Tracker
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Update Profile Image</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="update-button">Update Image</button>
+    </form>
+</div>
+
+<style>
+    .form-container {
+        background-color: #fdfdfd;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: 50px auto;
+        font-family: 'Poppins', Arial, sans-serif;
+        text-align: center;
+    }
+
+    .form-container h2 {
+        font-size: 24px;
+        color: #6a1b9a;
+        margin-bottom: 20px;
+    }
+
+    .update-button {
+        background-color: #6a1b9a;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .update-button:hover {
+        background-color: #531779;
+    }
+</style>
+{% endblock %}

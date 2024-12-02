@@ -1,6 +1,6 @@
-from django.http import Http404, HttpResponseForbidden, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View, FormView
 from django.urls import reverse, reverse_lazy
 from django.core.files.images import ImageFile 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -10,6 +10,8 @@ from django.contrib.auth import login
 from django.contrib.auth.mixins import AccessMixin
 from django.contrib.auth.views import LoginView
 from django.db.models import Q
+from django.contrib import messages
+
 
 
 
@@ -181,15 +183,61 @@ class ProfileDetailView(DetailView):
         # Retrieve the profile for the logged-in user
         return get_object_or_404(Profile, auth_user=self.request.user)
         
-    def add_favorite_anime(request):
-        """
-        Add an anime to the user's favorite list.
-        """
-        if request.method == 'POST':
-            anime_id = request.POST.get('anime_id')
-            anime = get_object_or_404(Anime, id=anime_id)
-            user = request.user.user  # Assuming a OneToOne link between AuthUser and User
-            user.favorite_anime.add(anime)
-            return redirect('anime_list')  # Redirect back to the anime list
+def add_favorite_anime(request):
+    if request.method == 'POST':
+        anime_id = request.POST.get('anime_id')
+        anime = get_object_or_404(Anime, pk=anime_id)
+        profile = get_object_or_404(Profile, auth_user=request.user)
+        
+        if anime in profile.favorite_anime.all():
+            messages.warning(request, f"{anime.title} is already in your favorites!")
+        else:
+            profile.favorite_anime.add(anime)
+            messages.success(request, f"{anime.title} has been added to your favorites!")
+        
+        return redirect('anime_list')
+    return HttpResponse(status=405)
+    
+class UpdateProfileImageView(LoginRequiredMixin, UpdateView):
+    """
+    View to update the user's profile image.
+    """
+    model = Profile
+    form_class = UpdateProfileImageForm
+    template_name = "final_project/update_profile_image.html"
+    context_object_name = "profile"
+
+    def get_object(self, queryset=None):
+        # Ensure the user can only update their own profile
+        return Profile.objects.get(auth_user=self.request.user)
+
+    def get_success_url(self):
+        # Redirect back to the profile page after successful update
+        return reverse_lazy('profile')
+
+class AddAnimeView(LoginRequiredMixin, FormView):
+    """
+    A view to add multiple animes to the user's favorite list.
+    """
+    template_name = "final_project/add_anime.html"
+    form_class = AddAnimeForm
+    success_url = '/final_project/profile/'  # Redirect to the anime list after submission
+
+    def form_valid(self, form):
+        # Get the selected animes
+        selected_animes = form.cleaned_data['anime_ids']
+
+        # Get the user's profile
+        profile = self.request.user.profile 
+        for anime in selected_animes:
+            if anime not in profile.favorite_anime.all():
+                profile.favorite_anime.add(anime)
+
+        messages.success(self.request, "Selected animes have been added to your favorites!")
+        return redirect(self.get_success_url())
+
+    def form_invalid(self, form):
+        messages.warning(self.request, "Please select at least one anime.")
+        return super().form_invalid(form)
     
 

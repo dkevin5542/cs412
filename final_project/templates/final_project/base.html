@@ -147,6 +147,8 @@
             {% if user.is_authenticated %}
                 <a href="{% url 'anime_list' %}">Anime List</a>
                 <a href="{% url 'profile' %}">My Profile</a>
+                <a href="{% url 'add_anime' %}">Add Favorites</a>
+                
 
 
 
@@ -155,7 +157,6 @@
                     {% csrf_token %}
                     <button type="submit" class="logout-btn">Logout</button>
                 </form>
-                <div class="auth-info">Welcome, {{ user.username }}</div>
             {% else %}
                 <a href="{% url 'login1' %}">Login</a>
             {% endif %}

@@ -1,7 +1,22 @@
 {% extends "final_project/base.html" %}
 
+{% block title %}
+Anime List - Anime Tracker
+{% endblock %}
+
 {% block content %}
 <h1 align="center" class="anime-header">Anime List</h1>
+
+<!-- Messages -->
+{% if messages %}
+    <div class="messages-container">
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
 
 <!-- Search Bar -->
 <div class="search-container">
@@ -28,6 +43,12 @@
             <p><strong>Popularity:</strong> {{ anime.popularity }}</p>
             <p><strong>Genre:</strong> {{ anime.genre|join:", " }}</p>
             <a href="{% url 'anime_detail' anime.pk %}" class="anime-button">View Details</a>
+            <form method="POST" action="{% url 'add_favorite_anime' %}">
+                {% csrf_token %}
+                <input type="hidden" name="anime_id" value="{{ anime.pk }}"> <!-- Use `pk` instead of `id` -->
+                <button type="submit" class="favorite-add-button">Add to Favorites</button>
+            </form>
+            
         </div>
     {% empty %}
         <p class="no-results">No anime found.</p>
@@ -58,6 +79,34 @@
         text-shadow: 2px 2px #1d3557;
         margin-bottom: 20px;
         font-size: 36px;
+    }
+
+    /* Messages Styling */
+    .messages-container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .message {
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .message.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .message.warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
     }
 
     /* Search Bar Styling */
@@ -158,14 +207,6 @@
         background-color: #d62828;
     }
 
-    /* No Results Styling */
-    .no-results {
-        text-align: center;
-        font-size: 18px;
-        color: #e63946;
-        margin-top: 20px;
-    }
-
     /* Pagination Styling */
     .pagination {
         margin: 30px auto;
@@ -198,6 +239,24 @@
     .page-controls a:hover {
         color: white;
         background: #e63946;
+    }
+
+    .favorite-add-button {
+        display: block;
+        margin: 10px auto;
+        padding: 10px 15px;
+        background-color: #6a1b9a;
+        color: white;
+        border: none;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .favorite-add-button:hover {
+        background-color: #531779;
     }
 </style>
 {% endblock %}
