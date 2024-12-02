@@ -12,7 +12,8 @@ urlpatterns = [
     path('register/', views.RegistrationView.as_view(), name='register1'),
     path('create_profile/', views.CreateProfileView.as_view(), name='create_profile1'),
     path('ranking/', views.AnimeListView.as_view(), name='anime_list'),
-    path('anime/<int:pk>/', views.AnimeDetailView.as_view(), name='anime_detail'),  # Detail view
+    path('anime/<int:pk>/', views.AnimeDetailView.as_view(), name='anime_detail'), 
+    path('profile/', views.ProfileDetailView.as_view(), name='profile'),
 
 
 

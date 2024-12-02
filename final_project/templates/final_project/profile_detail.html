@@ -1,0 +1,160 @@
+{% extends "final_project/base.html" %}
+
+{% block title %}
+{{ profile.username }}'s Profile - Anime Tracker
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <a href="{% url 'home' %}" class="back-button">← Back to Home</a>
+    <h1>{{ profile.username }}'s Profile</h1>
+    <div class="profile-image-container">
+        {% if profile.image_file %}
+            <img src="{{ profile.image_file.url }}" alt="{{ profile.username }}" class="profile-image">
+        {% else %}
+            <div class="profile-placeholder">
+                <span>{{ profile.username|slice:":1"|upper }}</span>
+            </div>
+        {% endif %}
+    </div>
+    <div class="profile-details">
+        <p><strong>Email:</strong> {{ profile.email }}</p>
+        <p><strong>Joined on:</strong> {{ profile.date_joined|date:"F j, Y" }}</p>
+    </div>
+
+    <a href="{% url 'anime_list' %}" class="favorite-anime-button">Add Favorite Anime</a>
+
+    {% if profile.favorite_anime.exists %}
+    <div class="favorite-anime">
+        <h2>Favorite Anime</h2>
+        <ul>
+            {% for anime in profile.favorite_anime.all %}
+                <li>{{ anime.title }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% else %}
+        <p style="color: #555;">This user has not added any favorite anime yet.</p>
+    {% endif %}
+</div>
+
+<style>
+    .profile-container {
+        background-color: #f9f3fc;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+        max-width: 750px;
+        margin: 60px auto;
+        text-align: center;
+        font-family: 'Poppins', Arial, sans-serif;
+    }
+
+    .profile-container h1 {
+        font-size: 32px;
+        color: #6a1b9a;
+        margin-bottom: 20px;
+    }
+
+    .profile-image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .profile-container img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #6a1b9a;
+    }
+
+    .profile-placeholder {
+        width: 150px;
+        height: 150px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #e0e0e0;
+        border-radius: 50%;
+        font-size: 48px;
+        color: #6a1b9a;
+        font-weight: bold;
+        border: 3px solid #6a1b9a;
+        text-transform: uppercase;
+    }
+
+    .profile-details {
+        text-align: left;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+    }
+
+    .profile-details p {
+        font-size: 16px;
+        margin: 10px 0;
+    }
+
+    .favorite-anime-button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 12px 20px;
+        background-color: #6a1b9a;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    .favorite-anime-button:hover {
+        background-color: #531779;
+    }
+
+    .favorite-anime {
+        margin-top: 30px;
+        text-align: left;
+    }
+
+    .favorite-anime h2 {
+        color: #6a1b9a;
+    }
+
+    .favorite-anime ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .favorite-anime li {
+        background-color: #f5effa;
+        padding: 10px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+    }
+
+    .back-button {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding: 10px 15px;
+        background-color: #e0e0e0;
+        color: #333;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+        background-color: #c9c9c9;
+    }
+</style>
+{% endblock %}

@@ -146,6 +146,10 @@
             <a href="{% url 'home' %}">Home</a>
             {% if user.is_authenticated %}
                 <a href="{% url 'anime_list' %}">Anime List</a>
+                <a href="{% url 'profile' %}">My Profile</a>
+
+
+
 
                 <form action="{% url 'logout1' %}" method="post" class="logout-form">
                     {% csrf_token %}

@@ -99,7 +99,7 @@ class CreateProfileView(AccessMixin, CreateView):
     """
     A view to create a new profile and associate it with the logged-in user.
     """
-    model = User
+    model = Profile
     form_class = CreateProfileForm
     template_name = "final_project/create_profile_form.html"
 
@@ -109,7 +109,7 @@ class CreateProfileView(AccessMixin, CreateView):
             return redirect(reverse('login1'))
 
         # Check if the user already has a profile
-        if User.objects.filter(auth_user=request.user).exists():
+        if Profile.objects.filter(auth_user=request.user).exists():
             # Redirect to home page if the profile already exists
             return redirect(reverse('home'))
 
@@ -117,14 +117,17 @@ class CreateProfileView(AccessMixin, CreateView):
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        # Set the auth_user field to the currently logged-in user
+        # Set the `auth_user` field to the currently logged-in user
         form.instance.auth_user = self.request.user
         self.object = form.save()
         return super().form_valid(form)
 
     def get_success_url(self):
-        # Redirect the user to the home page upon successful profile creation
-        return reverse('home')
+        # Redirect to the profile detail page of the created profile
+        return reverse('profile')
+    
+
+
 
 class CustomLoginView(LoginView):
     """
@@ -165,4 +168,28 @@ class AnimeDetailView(DetailView):
     model = Anime
     template_name = "final_project/anime_detail.html"
     context_object_name = "anime"
+
+class ProfileDetailView(DetailView):
+    """
+    Detailed view for displaying a user's profile.
+    """
+    model = Profile
+    template_name = "final_project/profile_detail.html"
+    context_object_name = "profile"
+
+    def get_object(self, queryset=None):
+        # Retrieve the profile for the logged-in user
+        return get_object_or_404(Profile, auth_user=self.request.user)
+        
+    def add_favorite_anime(request):
+        """
+        Add an anime to the user's favorite list.
+        """
+        if request.method == 'POST':
+            anime_id = request.POST.get('anime_id')
+            anime = get_object_or_404(Anime, id=anime_id)
+            user = request.user.user  # Assuming a OneToOne link between AuthUser and User
+            user.favorite_anime.add(anime)
+            return redirect('anime_list')  # Redirect back to the anime list
+    
 

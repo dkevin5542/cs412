@@ -6,7 +6,7 @@ from django.contrib.auth.models import User as AuthUser
 
 
 # Create your models here.
-class User(models.Model):
+class Profile(models.Model):
     username = models.CharField(max_length=150, unique=True)  # Unique username for the user
     email = models.EmailField(unique=True)  # Unique email for contact
     image_file = models.ImageField(blank=True)
@@ -15,7 +15,7 @@ class User(models.Model):
     auth_user = models.ForeignKey(
         AuthUser,
         on_delete=models.CASCADE,  # Delete the custom User instances if the auth User is deleted
-        related_name='custom_users',  # Reverse lookup from AuthUser to custom Users
+        related_name='anime_profile',  # Reverse lookup from AuthUser to custom Users
         help_text="The associated Django auth user.",
     )
 
@@ -144,7 +144,7 @@ class Merchandise(models.Model):
     description = models.TextField(blank=True, null=True)  
     price = models.DecimalField(max_digits=10, decimal_places=2)  # Price of the merchandise
     user = models.ForeignKey(
-        'User',  # Link to the User model
+        'Profile',  # Link to the User model
         on_delete=models.CASCADE,  # Deletes merchandise when the user is deleted
         related_name='merchandise'  # Related name for reverse lookup
     )
