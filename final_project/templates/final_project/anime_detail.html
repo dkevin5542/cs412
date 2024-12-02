@@ -15,6 +15,21 @@
         <p><strong>Aired:</strong> {{ anime.aired }}</p>
     </div>
     <a href="{{ anime.link }}" target="_blank" class="external-link">View on External Site</a>
+
+        <!-- Characters Section -->
+        <div class="characters-section">
+            <h2>Characters</h2>
+            <div class="characters-container">
+                {% for character in anime.characters.all %}
+                    <a href="{% url 'character_detail' anime.pk character.pk %}" class="character-card">
+                        <img src="{{ character.image_url|default:'#' }}" alt="{{ character.name }}" class="character-image">
+                        <h3 class="character-name">{{ character.name }}</h3>
+                    </a>
+                {% empty %}
+                    <p>No characters available for this anime.</p>
+                {% endfor %}
+            </div>
+        </div>
 </div>
 
 <style>
@@ -126,6 +141,77 @@
         .external-link, .back-button {
             font-size: 14px;
             padding: 8px 12px;
+        }
+    }
+
+    .anime-detail-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 30px;
+        background: linear-gradient(145deg, #f7f7fa, #ebebf1);
+        border-radius: 20px;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.8;
+        color: #2d2d2d;
+        text-align: center;
+        position: relative;
+    }
+
+    .characters-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .character-card {
+        width: 200px; /* Increased card width */
+        background-color: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        text-decoration: none;
+        color: #333;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .character-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .character-image {
+        width: 70%;
+        height: 250px; 
+        object-fit: cover;
+        border-bottom: 2px solid #6a1b9a;
+    }
+
+    .character-name {
+        font-size: 18px;
+        padding: 12px;
+        color: #6a1b9a;
+        font-weight: 600;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .character-card {
+            width: 180px;
+        }
+
+        .character-image {
+            height: 220px;
+        }
+
+        .character-name {
+            font-size: 16px;
+            padding: 8px;
         }
     }
 </style>

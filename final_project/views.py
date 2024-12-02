@@ -171,6 +171,9 @@ class AnimeDetailView(DetailView):
     template_name = "final_project/anime_detail.html"
     context_object_name = "anime"
 
+    def get_object(self, queryset=None):
+        return get_object_or_404(Anime, pk=self.kwargs['anime_pk'])
+
 class ProfileDetailView(DetailView):
     """
     Detailed view for displaying a user's profile.
@@ -265,6 +268,14 @@ class AllFavoriteAnimeView(ListView):
         context = super().get_context_data(**kwargs)
         context['profile'] = get_object_or_404(Profile, auth_user=self.request.user)
         return context
+    
+class CharacterDetailView(DetailView):
+    model = Character
+    template_name = "final_project/character_detail.html"
+    context_object_name = "character"
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Character, pk=self.kwargs['character_pk'])
     
 
     
