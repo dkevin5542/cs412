@@ -16,7 +16,9 @@ urlpatterns = [
     path('profile/', views.ProfileDetailView.as_view(), name='profile'),
     path('anime/add-favorite/', views.add_favorite_anime, name='add_favorite_anime'),
     path('profile/update-image/', views.UpdateProfileImageView.as_view(), name='update_profile_image'),
-    path('add-multiple/', views.AddAnimeView.as_view(), name='add_anime'),
+    # path('add-multiple/', views.AddAnimeView.as_view(), name='add_anime'),
+    path('profile/favorites/', views.AllFavoriteAnimeView.as_view(), name='all_favorite_anime'),
+
 
 
 

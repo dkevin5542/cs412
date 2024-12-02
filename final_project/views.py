@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login
 from django.contrib.auth.mixins import AccessMixin
 from django.contrib.auth.views import LoginView
-from django.db.models import Q
+from django.db.models import Q, F
 from django.contrib import messages
 
 
@@ -182,6 +182,14 @@ class ProfileDetailView(DetailView):
     def get_object(self, queryset=None):
         # Retrieve the profile for the logged-in user
         return get_object_or_404(Profile, auth_user=self.request.user)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = self.get_object()
+        # Fetch top 3 anime by score
+        top_3_anime = profile.favorite_anime.all().order_by(F('score').desc(nulls_last=True))[:3]
+        context['top_3_anime'] = top_3_anime
+        return context
         
 def add_favorite_anime(request):
     if request.method == 'POST':
@@ -239,5 +247,25 @@ class AddAnimeView(LoginRequiredMixin, FormView):
     def form_invalid(self, form):
         messages.warning(self.request, "Please select at least one anime.")
         return super().form_invalid(form)
+    
+class AllFavoriteAnimeView(ListView):
+    """
+    ListView to display all favorite anime for the current user.
+    """
+    template_name = "final_project/all_favorite_anime.html"
+    context_object_name = "favorite_anime"
+    paginate_by = 10  # Set the number of anime per page
+
+    def get_queryset(self):
+        # Get the logged-in user's profile
+        profile = get_object_or_404(Profile, auth_user=self.request.user)
+        return profile.favorite_anime.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profile'] = get_object_or_404(Profile, auth_user=self.request.user)
+        return context
+    
+
     
 

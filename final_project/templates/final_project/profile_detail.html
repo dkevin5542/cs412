@@ -25,17 +25,19 @@
 
     <a href="{% url 'anime_list' %}" class="favorite-anime-button">Add Favorite Anime</a>
 
-    {% if profile.favorite_anime.exists %}
-    <div class="favorite-anime">
-        <h2>Favorite Anime</h2>
+    {% if top_3_anime %}
+    <div class="favorite-anime-top">
+        <h2>Top 3 Favorite Anime</h2>
         <div class="anime-cards-container">
-            {% for anime in profile.favorite_anime.all %}
+            {% for anime in top_3_anime %}
                 <a href="{% url 'anime_detail' anime.pk %}" class="anime-card">
                     <img src="{{ anime.img_url }}" alt="{{ anime.title }}" class="anime-card-image">
                     <h3 class="anime-card-title">{{ anime.title }}</h3>
+                    <p class="anime-score">Score: {{ anime.score|default:"N/A" }}</p>
                 </a>
             {% endfor %}
         </div>
+        <a href="{% url 'all_favorite_anime' %}" class="view-all-button">View All Favorites</a>
     </div>
     {% else %}
         <p style="color: #555;">This user has not added any favorite anime yet.</p>
@@ -143,15 +145,20 @@
         background-color: #531779;
     }
 
-    .favorite-anime {
+    .favorite-anime-top {
         margin-top: 30px;
-        text-align: left;
+        text-align: center;
     }
 
-    .favorite-anime h2 {
+    .favorite-anime-top h2 {
         color: #6a1b9a;
-        text-align: center;
         margin-bottom: 20px;
+    }
+
+    .anime-score {
+        font-size: 14px;
+        color: #333;
+        margin-top: 5px;
     }
 
     .anime-cards-container {
@@ -191,6 +198,23 @@
         font-weight: bold;
     }
 
+    .view-all-button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 15px;
+        background-color: #6a1b9a;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .view-all-button:hover {
+        background-color: #531779;
+    }
+
     .back-button {
         display: inline-block;
         margin-bottom: 15px;
@@ -209,4 +233,3 @@
     }
 </style>
 {% endblock %}
-
