@@ -1,0 +1,195 @@
+{% extends "final_project/base.html" %}
+
+{% block title %}Audio Files{% endblock %}
+
+{% block content %}
+<div class="audio-container">
+    <h1>Audio Files</h1>
+
+    {% if audio_files %}
+    <ul class="audio-list">
+        {% for audio in audio_files %}
+        <li>
+            <a href="{% url 'anime_detail' audio.anime.pk %}" class="audio-item">
+                <div class="audio-info">
+                    <h2 class="audio-title">{{ audio.title }}</h2>
+                    <p class="audio-uploaded">Uploaded on {{ audio.uploaded_at|date:"F j, Y, g:i a" }}</p>
+                    {% if audio.anime %}
+                    <p class="audio-anime"><strong>Anime:</strong> {{ audio.anime.title }}</p>
+                    {% endif %}
+                    <p class="audio-artist"><strong>Artist:</strong> {{ audio.artist }}</p>
+                </div>
+                <audio controls class="audio-player" id="audio-{{ audio.id }}">
+                    <source src="{{ audio.file.url }}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Pagination Controls -->
+    {% if is_paginated %}
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="pagination-link">Previous</a>
+        {% endif %}
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="pagination-link">Next</a>
+        {% endif %}
+    </div>
+    {% endif %}
+    {% else %}
+    <p class="no-audio-message">No audio files are currently available.</p>
+    {% endif %}
+</div>
+
+<script>
+    /**
+     * Skips the audio playback by the specified time (positive or negative).
+     * @param {string} audioId - The ID of the audio element.
+     * @param {number} time - The number of seconds to skip (negative to go backward).
+     */
+    function skipTime(audioId, time) {
+        const audioElement = document.getElementById(audioId);
+        if (audioElement) {
+            audioElement.currentTime = Math.max(0, audioElement.currentTime + time);
+        }
+    }
+</script>
+
+<style>
+    .audio-container {
+        background-color: #f9f9f9;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+        max-width: 800px;
+        margin: 60px auto;
+        font-family: 'Poppins', Arial, sans-serif;
+    }
+
+    .audio-container h1 {
+        font-size: 32px;
+        color: #457b9d;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .audio-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .audio-item {
+        display: block;
+        margin-bottom: 30px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .audio-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .audio-info {
+        margin-bottom: 15px;
+    }
+
+    .audio-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #e63946;
+    }
+
+    .audio-uploaded {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    .audio-anime {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .audio-artist {
+        font-size: 16px;
+        color: #6a1b9a;
+        margin-bottom: 10px;
+    }
+
+    .audio-player {
+        width: 100%;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+
+    .audio-controls {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    .skip-back,
+    .skip-forward {
+        background-color: #6a1b9a;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .skip-back:hover,
+    .skip-forward:hover {
+        background-color: #531779;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .pagination-link {
+        padding: 8px 12px;
+        margin: 0 5px;
+        background-color: #6a1b9a;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+    }
+
+    .pagination-link:hover {
+        background-color: #531779;
+    }
+
+    .pagination span {
+        padding: 8px 12px;
+        margin: 0 5px;
+        background-color: #e0e0e0;
+        border-radius: 5px;
+    }
+
+    .no-audio-message {
+        color: #555;
+        text-align: center;
+        margin-top: 20px;
+        font-size: 18px;
+    }
+</style>
+{% endblock %}

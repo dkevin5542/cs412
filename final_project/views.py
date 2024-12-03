@@ -351,3 +351,25 @@ def home(request):
 #         # Call the get_recommendations method on the Profile instance
 #         return profile.get_recommendations()
 
+
+def about(request):
+    """
+    About page that provides information about the creator.
+    """
+    context = {
+        "creator_name": "Kevin Dong",
+        "creator_bio": "Kevin is a senior at Boston University majoring in Computer Science. "
+                       "He enjoys watching anime, reading light novels, and working on exciting web development projects.",
+        "profile_image_url": "https://cirsova.wordpress.com/wp-content/uploads/2023/11/image-3.png",  
+    }
+    return render(request, "final_project/about.html", context)
+
+class AudioListView(ListView):
+    """
+    ListView to display all uploaded audio files.
+    """
+    model = AudioFile
+    template_name = "final_project/audio_list.html"
+    context_object_name = "audio_files"
+    paginate_by = 10  # Optional: Paginate the list if there are many files
+

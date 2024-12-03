@@ -1,0 +1,61 @@
+{% extends "final_project/base.html" %}
+
+{% block title %}About - Anime Tracker{% endblock %}
+
+{% block content %}
+<div class="about-container">
+    <h1>About the Creator</h1>
+    <div class="creator-profile">
+        <img src="{{ profile_image_url }}" alt="Profile Picture of {{ creator_name }}" class="profile-image">
+        <h2>{{ creator_name }}</h2>
+        <p>{{ creator_bio }}</p>
+    </div>
+</div>
+
+<style>
+    .about-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+        text-align: center;
+        background-color: #f9f3fc;
+        border-radius: 15px;
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+        font-family: 'Poppins', Arial, sans-serif;
+    }
+
+    .about-container h1 {
+        font-size: 36px;
+        color: #6a1b9a;
+        margin-bottom: 20px;
+    }
+
+    .creator-profile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .profile-image {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #6a1b9a;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .creator-profile h2 {
+        font-size: 24px;
+        color: #457b9d;
+        margin: 0;
+    }
+
+    .creator-profile p {
+        font-size: 16px;
+        color: #333;
+        line-height: 1.6;
+    }
+</style>
+{% endblock %}

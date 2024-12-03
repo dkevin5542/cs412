@@ -20,6 +20,10 @@ urlpatterns = [
     path('profile/add-merchandise/', views.add_merchandise_to_profile, name='add_merchandise_to_profile'),
     path('profile/remove-merchandise/<int:pk>/', views.remove_merchandise_from_profile, name='remove_merchandise_from_profile'),
     path('merchandise/<int:pk>/add-confirmation/', views.merchandise_add_confirmation, name='merchandise_add_confirmation'),
+    path("about/", views.about, name="about"),
+    path('audio/', views.AudioListView.as_view(), name='audio_list'),
+
+
     # path('recommended/', views.RecommendedAnimeView.as_view(), name='recommended_anime'),
 
 

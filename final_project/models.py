@@ -183,3 +183,23 @@ class Merchandise(models.Model):
 
     def __str__(self):
         return f"{self.item_name} ({self.type})"
+    
+class AudioFile(models.Model):
+    """
+    Model to store MP3 files in the database.
+    """
+    title = models.CharField(max_length=255, help_text="Title of the audio file")
+    artist = models.CharField(max_length=255, help_text="Artist of the audio file")  # New artist field
+    file = models.FileField(upload_to='audio/', help_text="Upload MP3 file")
+    uploaded_at = models.DateTimeField(auto_now_add=True, help_text="Date and time the file was uploaded")
+
+    # Foreign key relationship with Anime
+    anime = models.ForeignKey(
+        'Anime', 
+        on_delete=models.CASCADE,  # Deletes audio files when the related anime is deleted
+        related_name='audio_files',  # Related name for reverse lookup
+        help_text="The anime associated with this audio file",
+    )
+
+    def __str__(self):
+        return f"{self.title} by {self.artist} ({self.anime.title})"
