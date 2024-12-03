@@ -203,3 +203,20 @@ class AudioFile(models.Model):
 
     def __str__(self):
         return f"{self.title} by {self.artist} ({self.anime.title})"
+    
+class Video(models.Model):
+    """
+    Model to store video files and associate them with an anime.
+    """
+    title = models.CharField(max_length=255, help_text="Title of the video")
+    file = models.FileField(upload_to='videos/', help_text="Upload MP4 file")
+    anime = models.ForeignKey(
+        'Anime',
+        on_delete=models.CASCADE,
+        related_name='videos',
+        help_text="The anime associated with this video"
+    )
+    uploaded_at = models.DateTimeField(auto_now_add=True, help_text="Date and time the file was uploaded")
+
+    def __str__(self):
+        return self.title

@@ -4,6 +4,25 @@
 <div class="anime-detail-container">
     <a href="{% url 'anime_list' %}" class="back-button">← Back to List</a>
     <h1>{{ anime.title }}</h1>
+
+    <!-- Video Section -->
+    <div class="videos-section">
+        <h2>Videos</h2>
+        <div class="videos-container">
+            {% for video in anime.videos.all %}
+            <div class="video-card">
+                <h3 class="video-title">{{ video.title }}</h3>
+                <video controls class="video-player">
+                    <source src="{{ video.file.url }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            {% empty %}
+            <p>No videos available for this anime.</p>
+            {% endfor %}
+        </div>
+    </div>
+
     <img src="{{ anime.img_url }}" alt="{{ anime.title }}" class="anime-image">
     <div class="anime-details">
         <p><strong>Synopsis:</strong> {{ anime.synopsis }}</p>
@@ -16,20 +35,20 @@
     </div>
     <a href="{{ anime.link }}" target="_blank" class="external-link">View on External Site</a>
 
-        <!-- Characters Section -->
-        <div class="characters-section">
-            <h2>Characters</h2>
-            <div class="characters-container">
-                {% for character in anime.characters.all %}
-                    <a href="{% url 'character_detail' anime.pk character.pk %}" class="character-card">
-                        <img src="{{ character.image_url|default:'#' }}" alt="{{ character.name }}" class="character-image">
-                        <h3 class="character-name">{{ character.name }}</h3>
-                    </a>
-                {% empty %}
-                    <p>No characters available for this anime.</p>
-                {% endfor %}
-            </div>
+    <!-- Characters Section -->
+    <div class="characters-section">
+        <h2>Characters</h2>
+        <div class="characters-container">
+            {% for character in anime.characters.all %}
+                <a href="{% url 'character_detail' anime.pk character.pk %}" class="character-card">
+                    <img src="{{ character.image_url|default:'#' }}" alt="{{ character.name }}" class="character-image">
+                    <h3 class="character-name">{{ character.name }}</h3>
+                </a>
+            {% empty %}
+                <p>No characters available for this anime.</p>
+            {% endfor %}
         </div>
+    </div>
 </div>
 
 <style>
@@ -124,38 +143,50 @@
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
     }
 
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .anime-detail-container {
-            padding: 20px;
-        }
-
-        .anime-detail-container h1 {
-            font-size: 28px;
-        }
-
-        .anime-details p {
-            font-size: 14px;
-        }
-
-        .external-link, .back-button {
-            font-size: 14px;
-            padding: 8px 12px;
-        }
+    /* Video Section */
+    .videos-section {
+        margin-top: 30px;
+        text-align: center;
     }
 
-    .anime-detail-container {
-        max-width: 900px;
-        margin: 40px auto;
-        padding: 30px;
-        background: linear-gradient(145deg, #f7f7fa, #ebebf1);
-        border-radius: 20px;
-        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
-        font-family: 'Poppins', sans-serif;
-        line-height: 1.8;
-        color: #2d2d2d;
+    .videos-section h2 {
+        font-size: 28px;
+        color: #457b9d;
+        margin-bottom: 20px;
+    }
+
+    .videos-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .video-card {
+        width: 400px;
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 15px;
         text-align: center;
-        position: relative;
+    }
+
+    .video-card h3 {
+        font-size: 18px;
+        color: #e63946;
+        margin-bottom: 10px;
+    }
+
+    .video-player {
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .video-card {
+            width: 100%;
+        }
     }
 
     .characters-container {
@@ -166,7 +197,7 @@
     }
 
     .character-card {
-        width: 200px; /* Increased card width */
+        width: 200px;
         background-color: #ffffff;
         border-radius: 15px;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -183,7 +214,7 @@
 
     .character-image {
         width: 70%;
-        height: 250px; 
+        height: 250px;
         object-fit: cover;
         border-bottom: 2px solid #6a1b9a;
     }
@@ -216,4 +247,3 @@
     }
 </style>
 {% endblock %}
-

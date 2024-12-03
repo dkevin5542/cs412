@@ -371,5 +371,5 @@ class AudioListView(ListView):
     model = AudioFile
     template_name = "final_project/audio_list.html"
     context_object_name = "audio_files"
-    paginate_by = 10  # Optional: Paginate the list if there are many files
+    paginate_by = 10 
 
