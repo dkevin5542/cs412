@@ -11,9 +11,8 @@ from django.contrib.auth.mixins import AccessMixin
 from django.contrib.auth.views import LoginView
 from django.db.models import Q, F
 from django.contrib import messages
-
-
-
+from functools import reduce
+from operator import or_
 
 
 
@@ -189,9 +188,12 @@ class ProfileDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         profile = self.get_object()
-        # Fetch top 3 anime by score
         top_3_anime = profile.favorite_anime.all().order_by(F('score').desc(nulls_last=True))[:3]
-        context['top_3_anime'] = top_3_anime
+        recommendations = Anime.objects.order_by('?')[:5]  # Replace with genre logic if needed
+        context.update({
+            'top_3_anime': top_3_anime,
+            'recommendations': recommendations
+        })
         return context
         
 def add_favorite_anime(request):
@@ -278,5 +280,74 @@ class CharacterDetailView(DetailView):
         return get_object_or_404(Character, pk=self.kwargs['character_pk'])
     
 
+def add_merchandise_to_profile(request):
+    profile = get_object_or_404(Profile, auth_user=request.user)
+    merchandise_list = Merchandise.objects.all()
+
+    if request.method == 'POST':
+        selected_merch_ids = request.POST.getlist('merchandise')
+        for merch_id in selected_merch_ids:
+            merch = get_object_or_404(Merchandise, pk=merch_id)
+            profile.selected_merchandise.add(merch)
+        messages.success(request, "Selected merchandise added to your profile!")
+        return redirect('profile')
+
+    return render(request, 'final_project/add_merchandise_to_profile.html', {'merchandise_list': merchandise_list})
+
+def remove_merchandise_from_profile(request, pk):
+    profile = get_object_or_404(Profile, auth_user=request.user)
+    merch = get_object_or_404(Merchandise, pk=pk)
+
+    if merch in profile.selected_merchandise.all():
+        profile.selected_merchandise.remove(merch)
+        messages.success(request, f"{merch.item_name} removed from your profile!")
+    else:
+        messages.warning(request, f"{merch.item_name} is not in your profile.")
+
+    return redirect('profile')
+
+def merchandise_add_confirmation(request, pk):
+    """
+    Confirmation view for adding merchandise to the user's profile.
+    """
+    merchandise = get_object_or_404(Merchandise, pk=pk)
     
+    if request.method == 'POST':
+        profile = get_object_or_404(Profile, auth_user=request.user)
+        if merchandise in profile.merchandise.all():
+            messages.warning(request, f"{merchandise.item_name} is already in your profile!")
+        else:
+            profile.merchandise.add(merchandise)
+            messages.success(request, f"{merchandise.item_name} has been added to your profile!")
+        return redirect('profile')
+
+    return render(request, 'final_project/merchandise_add_confirmation.html', {'merchandise': merchandise})
+
+def home(request):
+    if request.user.is_authenticated:
+        profile = request.user.profile
+        recommendations = profile.get_recommendations()
+    else:
+        recommendations = []
+
+    return render(request, 'final_project/base.html', {
+        'recommendations': recommendations,
+    })
+
+# class RecommendedAnimeView(ListView):
+#     template_name = "final_project/recommended_anime.html"
+#     context_object_name = "recommendations"
+
+#     def get_queryset(self):
+#         if not self.request.user.is_authenticated:
+#             return Anime.objects.none()  # No recommendations for unauthenticated users
+
+#         # Use the profile property to fetch the instance
+#         profile = self.request.user.anime_profile.first()  # Use `.first()` to get the profile instance
+
+#         if not profile:
+#             return Anime.objects.none()  # Return empty queryset if profile doesn't exist
+        
+#         # Call the get_recommendations method on the Profile instance
+#         return profile.get_recommendations()
 

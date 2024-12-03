@@ -1,0 +1,134 @@
+{% extends "final_project/base.html" %}
+
+{% block content %}
+<div class="merchandise-add-container">
+    <h2>Add Merchandise to Your Profile</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="merchandise-list">
+            {% for merch in merchandise_list %}
+                <label>
+                    <input type="checkbox" name="merchandise" value="{{ merch.pk }}">
+                    <div class="merch-card">
+                        <div class="merch-image-container">
+                            <img src="{{ merch.image_url }}" alt="{{ merch.item_name }}" class="merch-image">
+                        </div>
+                        <p class="merch-name">{{ merch.item_name }}</p>
+                        <p><strong>Price:</strong> ${{ merch.price }}</p>
+                    </div>
+                </label>
+            {% endfor %}
+        </div>
+        <button type="submit" class="add-button">Add Selected Merchandise</button>
+    </form>
+</div>
+
+<style>
+    /* General Container Styling */
+    .merchandise-add-container {
+        max-width: 900px;
+        margin: 60px auto;
+        padding: 30px;
+        background: linear-gradient(145deg, #f7f7fa, #ebebf1);
+        border-radius: 15px;
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+        font-family: 'Poppins', sans-serif;
+        text-align: center;
+    }
+
+    .merchandise-add-container h2 {
+        font-size: 28px;
+        color: #6a1b9a;
+        margin-bottom: 20px;
+    }
+
+    /* Merchandise List Styling */
+    .merchandise-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .merch-card {
+        width: 180px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        padding: 10px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+    }
+
+    .merch-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .merch-image-container {
+        width: 100%;
+        height: 150px;
+        background-color: #f1f1f1;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .merch-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .merch-image:invalid {
+        content: url('https://via.placeholder.com/150?text=No+Image');
+        object-fit: contain;
+    }
+
+    .merch-name {
+        font-size: 16px;
+        font-weight: bold;
+        color: #6a1b9a;
+        margin: 10px 0 5px;
+    }
+
+    /* Button Styling */
+    .add-button {
+        margin-top: 20px;
+        padding: 12px 20px;
+        background-color: #6a1b9a;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .add-button:hover {
+        background-color: #531779;
+        transform: scale(1.05);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .merch-card {
+            width: 100%;
+            max-width: 200px;
+        }
+
+        .merch-image-container {
+            height: 120px;
+        }
+
+        .add-button {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}

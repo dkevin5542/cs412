@@ -1,0 +1,67 @@
+{% extends "final_project/base.html" %}
+
+{% block title %}
+Recommended Anime - Anime Tracker
+{% endblock %}
+
+{% block content %}
+<div class="recommended-anime-container">
+    <h2>Recommended Anime</h2>
+    <div class="anime-cards-container">
+        {% for anime in recommended_anime %}
+            <a href="{% url 'anime_detail' anime.pk %}" class="anime-card">
+                <img src="{{ anime.img_url|default:'https://via.placeholder.com/150?text=No+Image' }}" alt="{{ anime.title }}" class="anime-card-image">
+                <h3 class="anime-card-title">{{ anime.title }}</h3>
+                <p><strong>Score:</strong> {{ anime.score|default:"N/A" }}</p>
+                <p><strong>Genres:</strong> {{ anime.genre|join:", " }}</p>
+            </a>
+        {% empty %}
+            <p>No recommendations available at the moment.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .recommended-anime-container {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .anime-cards-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .anime-card {
+        width: 200px;
+        text-align: center;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        text-decoration: none;
+        color: #333;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .anime-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .anime-card-image {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .anime-card-title {
+        font-size: 16px;
+        padding: 10px;
+        color: #6a1b9a;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}

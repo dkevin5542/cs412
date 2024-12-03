@@ -42,6 +42,26 @@
     {% else %}
         <p style="color: #555;">This user has not added any favorite anime yet.</p>
     {% endif %}
+
+    <div class="merchandise-section">
+        <h2>My Merchandise</h2>
+        <div class="merchandise-container">
+            {% for merch in profile.selected_merchandise.all %}
+                <div class="merch-card">
+                    <img src="{{ merch.image_url }}" alt="{{ merch.item_name }}" class="merch-image">
+                    <p class="merch-name">{{ merch.item_name }}</p>
+                    <p><strong>Price:</strong> ${{ merch.price }}</p>
+                    <form method="post" action="{% url 'remove_merchandise_from_profile' merch.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="remove-merch-button">Remove</button>
+                    </form>
+                </div>
+            {% empty %}
+                <p style="color: #555;">No merchandise added to your profile yet.</p>
+            {% endfor %}
+        </div>
+        <a href="{% url 'add_merchandise_to_profile' %}" class="add-merch-button">Add Merchandise</a>
+    </div>
 </div>
 
 <style>
@@ -230,6 +250,79 @@
 
     .back-button:hover {
         background-color: #c9c9c9;
+    }
+
+     /* Merchandise Section */
+     .merchandise-section {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .merchandise-section h2 {
+        color: #6a1b9a;
+        margin-bottom: 20px;
+    }
+
+    .merchandise-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .merch-card {
+        width: 200px;
+        text-align: center;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+    }
+
+    .merch-card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .merch-name {
+        font-size: 16px;
+        font-weight: bold;
+        color: #6a1b9a;
+        margin-bottom: 5px;
+    }
+
+    .remove-merch-button {
+        background-color: #e63946;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .remove-merch-button:hover {
+        background-color: #d62828;
+    }
+
+    .add-merch-button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 12px 20px;
+        background-color: #6a1b9a;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .add-merch-button:hover {
+        background-color: #531779;
     }
 </style>
 {% endblock %}

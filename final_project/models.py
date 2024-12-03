@@ -1,8 +1,15 @@
+import random
 from django.db import models
 import pandas as pd
 from django.db.utils import IntegrityError
 from django.contrib.auth.models import User as AuthUser
+from django.contrib.auth.models import User
 
+
+User.add_to_class(
+    'profile',
+    property(lambda u: u.anime_profile if hasattr(u, 'anime_profile') else None)
+)
 
 
 # Create your models here.
@@ -37,6 +44,22 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.username
+    
+    # def get_recommendations(self):
+    #     genres = set()
+    #     for anime in self.favorite_anime.all():
+    #         genres.update(anime.genre)
+
+    #     recommendations = Anime.objects.filter(
+    #         genre__overlap=list(genres)
+    #     ).exclude(pk__in=self.favorite_anime.all()).order_by('?')[:5]
+
+    #     # Fallback if no recommendations are found
+    #     if not recommendations.exists():
+    #         print("No recommendations found. Falling back to random anime.")
+    #         recommendations = Anime.objects.order_by('?')[:5]
+
+    #     return recommendations
     
     class Meta:
         constraints = [
@@ -141,8 +164,8 @@ class Merchandise(models.Model):
         ('accessory', 'Accessory'),
         ('other', 'Other'),
     ], default='other')
-    description = models.TextField(blank=True, null=True)  
     price = models.DecimalField(max_digits=10, decimal_places=2)  # Price of the merchandise
+    image_url = models.URLField(blank=True, null=True)
     user = models.ForeignKey(
         'Profile',  # Link to the User model
         on_delete=models.CASCADE,  # Deletes merchandise when the user is deleted

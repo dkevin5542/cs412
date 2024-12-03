@@ -25,7 +25,7 @@ Anime List - Anime Tracker
             type="text" 
             name="search" 
             placeholder="Search for an anime..." 
-            value="{{ request.GET.search|default:'' }}" 
+            value="{{ request.GET.search|default_if_none:'' }}"
             class="search-input"
         >
         <button type="submit" class="search-button">Search</button>
@@ -45,7 +45,7 @@ Anime List - Anime Tracker
             <a href="{% url 'anime_detail' anime.pk %}" class="anime-button">View Details</a>
             <form method="POST" action="{% url 'add_favorite_anime' %}">
                 {% csrf_token %}
-                <input type="hidden" name="anime_id" value="{{ anime.pk }}"> <!-- Use `pk` instead of `id` -->
+                <input type="hidden" name="anime_id" value="{{ anime.pk }}"> 
                 <button type="submit" class="favorite-add-button">Add to Favorites</button>
             </form>
             
