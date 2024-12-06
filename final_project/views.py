@@ -332,19 +332,25 @@ def remove_merchandise_from_profile(request, pk):
 
 def merchandise_add_confirmation(request, pk):
     """
-    Confirmation view for adding merchandise to the user's profile.
+    View to confirm and add merchandise to the user's profile.
     """
+    # Fetch the merchandise object
     merchandise = get_object_or_404(Merchandise, pk=pk)
-    
-    if request.method == 'POST':
-        profile = get_object_or_404(Profile, auth_user=request.user)
-        if merchandise in profile.merchandise.all():
-            messages.warning(request, f"{merchandise.item_name} is already in your profile!")
-        else:
-            profile.merchandise.add(merchandise)
-            messages.success(request, f"{merchandise.item_name} has been added to your profile!")
-        return redirect('profile')
 
+    # Ensure the user is authenticated
+    if not request.user.is_authenticated:
+        messages.error(request, "You must be logged in to add merchandise to your profile.")
+        return redirect('login1')  # Replace 'login1' with the URL name of your login page
+
+    profile = get_object_or_404(Profile, auth_user=request.user)
+
+    if request.method == 'POST':
+        # Add the merchandise to the user's profile
+        profile.selected_merchandise.add(merchandise)
+        messages.success(request, f"{merchandise.item_name} has been added to your profile.")
+        return redirect('profile')  # Redirect to the user's profile page
+
+    # Render the confirmation page
     return render(request, 'final_project/merchandise_add_confirmation.html', {'merchandise': merchandise})
 
 def home(request):

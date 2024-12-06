@@ -45,22 +45,6 @@ class Profile(models.Model):
     def __str__(self):
         return self.username
     
-    # def get_recommendations(self):
-    #     genres = set()
-    #     for anime in self.favorite_anime.all():
-    #         genres.update(anime.genre)
-
-    #     recommendations = Anime.objects.filter(
-    #         genre__overlap=list(genres)
-    #     ).exclude(pk__in=self.favorite_anime.all()).order_by('?')[:5]
-
-    #     # Fallback if no recommendations are found
-    #     if not recommendations.exists():
-    #         print("No recommendations found. Falling back to random anime.")
-    #         recommendations = Anime.objects.order_by('?')[:5]
-
-    #     return recommendations
-    
     class Meta:
         constraints = [
             models.UniqueConstraint(
