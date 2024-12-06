@@ -127,6 +127,10 @@ class CreateProfileView(AccessMixin, CreateView):
         # Redirect to the profile detail page of the created profile
         return reverse('profile')
     
+    def handle_no_permission(self):
+        messages.error(self.request, "You must be logged in to view this page.")
+        return redirect('login1')
+    
 
 
 
@@ -142,7 +146,7 @@ class CustomLoginView(LoginView):
             return reverse('create_profile1')
         return reverse('home')
     
-class AnimeListView(ListView):
+class AnimeListView(LoginRequiredMixin,ListView):
     """
     List view to display all Anime sorted by score in descending order.
     """
@@ -165,13 +169,21 @@ class AnimeListView(ListView):
         context["request"] = self.request  # Pass the request object to the template
         return context
     
-class AnimeDetailView(DetailView):
+    def handle_no_permission(self):
+        messages.error(self.request, "You must be logged in to view this page.")
+        return redirect('login1')
+    
+class AnimeDetailView(LoginRequiredMixin,DetailView):
     model = Anime
     template_name = "final_project/anime_detail.html"
     context_object_name = "anime"
 
     def get_object(self, queryset=None):
         return get_object_or_404(Anime, pk=self.kwargs['anime_pk'])
+    
+    def handle_no_permission(self):
+        messages.error(self.request, "You must be logged in to view this page.")
+        return redirect('login1')
 
 class ProfileDetailView(DetailView):
     """
@@ -227,6 +239,10 @@ class UpdateProfileImageView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         # Redirect back to the profile page after successful update
         return reverse_lazy('profile')
+    
+    def handle_no_permission(self):
+        messages.error(self.request, "You must be logged in to view this page.")
+        return redirect('login1')
 
 class AddAnimeView(LoginRequiredMixin, FormView):
     """
@@ -253,7 +269,7 @@ class AddAnimeView(LoginRequiredMixin, FormView):
         messages.warning(self.request, "Please select at least one anime.")
         return super().form_invalid(form)
     
-class AllFavoriteAnimeView(ListView):
+class AllFavoriteAnimeView(LoginRequiredMixin,ListView):
     """
     ListView to display all favorite anime for the current user.
     """
@@ -271,13 +287,21 @@ class AllFavoriteAnimeView(ListView):
         context['profile'] = get_object_or_404(Profile, auth_user=self.request.user)
         return context
     
-class CharacterDetailView(DetailView):
+    def handle_no_permission(self):
+        messages.error(self.request, "You must be logged in to view this page.")
+        return redirect('login1')
+    
+class CharacterDetailView(LoginRequiredMixin, DetailView):
     model = Character
     template_name = "final_project/character_detail.html"
     context_object_name = "character"
 
     def get_object(self, queryset=None):
         return get_object_or_404(Character, pk=self.kwargs['character_pk'])
+    
+    def handle_no_permission(self):
+        messages.error(self.request, "You must be logged in to view this page.")
+        return redirect('login1')
     
 
 def add_merchandise_to_profile(request):
@@ -347,7 +371,7 @@ def about(request):
     }
     return render(request, "final_project/about.html", context)
 
-class AudioListView(ListView):
+class AudioListView(LoginRequiredMixin, ListView):
     """
     ListView to display all uploaded audio files.
     """
@@ -355,4 +379,8 @@ class AudioListView(ListView):
     template_name = "final_project/audio_list.html"
     context_object_name = "audio_files"
     paginate_by = 10 
+
+    def handle_no_permission(self):
+        messages.error(self.request, "You must be logged in to view this page.")
+        return redirect('login1')  
 
