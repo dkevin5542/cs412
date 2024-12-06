@@ -334,23 +334,6 @@ def home(request):
         'recommendations': recommendations,
     })
 
-# class RecommendedAnimeView(ListView):
-#     template_name = "final_project/recommended_anime.html"
-#     context_object_name = "recommendations"
-
-#     def get_queryset(self):
-#         if not self.request.user.is_authenticated:
-#             return Anime.objects.none()  # No recommendations for unauthenticated users
-
-#         # Use the profile property to fetch the instance
-#         profile = self.request.user.anime_profile.first()  # Use `.first()` to get the profile instance
-
-#         if not profile:
-#             return Anime.objects.none()  # Return empty queryset if profile doesn't exist
-        
-#         # Call the get_recommendations method on the Profile instance
-#         return profile.get_recommendations()
-
 
 def about(request):
     """
